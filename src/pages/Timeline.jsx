@@ -4,6 +4,7 @@ import { PulseLoader } from "react-spinners";
 import styled from "styled-components";
 import PageTitle from "../components/PageTitle";
 import Post from "../components/Post";
+import SendPostForm from "../components/SendPostForm";
 
 export default function Timeline() {
   const [posts, setPosts] = useState([]);
@@ -38,6 +39,8 @@ export default function Timeline() {
     <TimelineStyle>
       <main>
         <PageTitle title="timeline" />
+
+        <SendPostForm />
 
         {showPosts()}
       </main>
