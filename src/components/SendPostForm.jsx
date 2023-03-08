@@ -1,11 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
 import styled from "styled-components";
-import LinkPost from "./LinkPost";
 
-export default function SendPostForm() {
+export default function SendPostForm({ updatePost }) {
   const [url, setUrl] = useState("");
   const [description, setDescription] = useState("");
+  const [publishing, setPublishing] = useState(false);
+  const [update, setUpdate] = updatePost;
 
   const mockUser = {
     username: "Jeff Araujo",
@@ -13,15 +14,26 @@ export default function SendPostForm() {
       "https://i.pinimg.com/736x/b9/ae/86/b9ae8625cac70903db98382d3d3492be.jpg",
   };
 
-  function sendPost(e){
+  function sendPost(e) {
     e.preventDefault();
+    setPublishing(true);
 
-    axios.post('http://localhost:5000/posts', {
+    const sendPromise = axios.post("http://localhost:5000/posts", {
       url: url,
       description: description,
-      user_id: 2
-    })
+      userId: prompt("Mock -- Qual id do usuário?"),
+    });
 
+    sendPromise.then((res) => {
+      setPublishing(false);
+      setDescription("");
+      setUrl("");
+      setUpdate(!update);
+    });
+    sendPromise.catch((res) => {
+      setPublishing(false);
+      alert("There was an error publishing your link");
+    });
   }
 
   return (
@@ -38,12 +50,16 @@ export default function SendPostForm() {
           value={url}
           onChange={(e) => setUrl(e.currentTarget.value)}
           required
+          disabled={publishing}
         />
         <textarea
           value={description}
           onChange={(e) => setDescription(e.currentTarget.value)}
+          disabled={publishing}
         />
-        <button>Publish</button>
+        <button disabled={publishing}>
+          {publishing ? "Publishing..." : "Publish"}
+        </button>
       </form>
     </SendPostFormStyle>
   );

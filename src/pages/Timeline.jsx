@@ -8,11 +8,17 @@ import SendPostForm from "../components/SendPostForm";
 
 export default function Timeline() {
   const [posts, setPosts] = useState([]);
+  const [update, setUpdate] = useState(false);
 
   useEffect(() => {
     const resultPosts = axios.get("http://localhost:5000/posts");
     resultPosts.then((res) => setPosts(res.data));
-  });
+    resultPosts.catch((res) => {
+      alert(
+        "An error occured while trying to fetch the posts, please refresh the page"
+      );
+    });
+  }, [update]);
 
   function showPosts() {
     if (!posts) {
@@ -40,7 +46,7 @@ export default function Timeline() {
       <main>
         <PageTitle title="timeline" />
 
-        <SendPostForm />
+        <SendPostForm updatePost={[update, setUpdate]} />
 
         {showPosts()}
       </main>
