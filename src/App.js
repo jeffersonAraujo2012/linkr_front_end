@@ -1,10 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React, { useState } from "react";
 import styled from "styled-components"
-import PaginaPrincipal from "./PaginaPrincipal";
-import Signup from "./Signup"
-import Home from "./Home.js"
-import AuthContext from "../contexts/AuthContext"
+import PaginaPrincipal from "./components/PaginaPrincipal";
+import Signup from "./components/Signup"
+import Home from "./components/Home"
+import AuthContext from "./contexts/AuthContext"
+import Timeline from "./pages/Timeline";
 
 export default function App() {
     const [ userData, setUserData ] = useState(
