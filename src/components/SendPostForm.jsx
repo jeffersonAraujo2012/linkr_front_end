@@ -1,12 +1,14 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
+import UpdateHashtagContext from "../contexts/UpdataHashtagContext";
 
 export default function SendPostForm({ updatePost }) {
   const [url, setUrl] = useState("");
   const [description, setDescription] = useState("");
   const [publishing, setPublishing] = useState(false);
   const [update, setUpdate] = updatePost;
+  const [updataHashtags, setUpdataHashtags] = useContext(UpdateHashtagContext);
 
   const mockUser = {
     username: "Jeff Araujo",
@@ -29,6 +31,7 @@ export default function SendPostForm({ updatePost }) {
       setDescription("");
       setUrl("");
       setUpdate(!update);
+      setUpdataHashtags(!updataHashtags);
     });
     sendPromise.catch((res) => {
       setPublishing(false);
