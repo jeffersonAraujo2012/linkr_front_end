@@ -1,27 +1,27 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import styled from "styled-components";
 import Post from "../components/Post";
+import SearchBar from "../components/SearchBar";
 import Trending from "../components/Trending";
+import UpdateUserPage from "../contexts/UpdateUserPage";
 
 export default function UserTimeline() {
     const { id } = useParams();
     const [posts, setPosts] = useState(undefined);
-    const [update, setUpdate] = useState(false);
+    const [updateUserPage, setUpdateUserPage] = useContext(UpdateUserPage);
     let userPicture = "";
     let userName = "";
 
     useEffect(() => {
         const resultPosts = axios.get(`http://localhost:5000/user/${id}`);
         resultPosts.then((res) => setPosts(res.data));
-        resultPosts.catch((res) => {
-            alert(
-                "An error occured while trying to fetch the posts, please refresh the page"
-            );
+        resultPosts.catch(err => {
+            alert(err.response.data);
         });
-    }, [update]);
+    }, [updateUserPage]);
 
     function showPosts() {
         if (!posts) {
@@ -33,7 +33,7 @@ export default function UserTimeline() {
             );
         }
 
-        if (posts?.length === 0) {
+        if (posts[0].url === null) {
             return <p className="no-posts">There are no posts yet</p>;
         }
 
@@ -50,6 +50,7 @@ export default function UserTimeline() {
 
     return (
         <TimelineStyle>
+            <SearchBar/>
             <div className="flex-column">
                 <TitleStyle>
                     <img src={posts[0].picture_user}/>

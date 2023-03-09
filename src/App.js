@@ -8,6 +8,7 @@ import Timeline from "./pages/Timeline";
 import Hashtag from "./pages/Hashtag";
 import UpdateHashtagContext from "./contexts/UpdataHashtagContext";
 import UserTimeline from "./pages/UserTimeline";
+import UpdateUserPage from "./contexts/UpdateUserPage";
 
 export default function App() {
   const [userData, setUserData] = useState({
@@ -18,9 +19,10 @@ export default function App() {
     _id: "",
   });
   const [updataHashtags, setUpdataHashtags] = useState(false);
-
+  const [updateUserPage, setUpdateUserPage] = useState(false);
   return (
-    <UpdateHashtagContext.Provider value={[updataHashtags, setUpdataHashtags]}>
+    <UpdateUserPage.Provider value={[updateUserPage, setUpdateUserPage]}>
+      <UpdateHashtagContext.Provider value={[updataHashtags, setUpdataHashtags]}>
       <AuthContext.Provider value={{ userData, setUserData }}>
         <BrowserRouter>
           <Routes>
@@ -33,6 +35,7 @@ export default function App() {
           </Routes>
         </BrowserRouter>
       </AuthContext.Provider>
-    </UpdateHashtagContext.Provider>
+      </UpdateHashtagContext.Provider>
+    </UpdateUserPage.Provider>
   );
 }
