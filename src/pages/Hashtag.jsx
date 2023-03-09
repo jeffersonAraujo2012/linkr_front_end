@@ -1,25 +1,28 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import styled from "styled-components";
 import PageTitle from "../components/PageTitle";
 import Post from "../components/Post";
-import SendPostForm from "../components/SendPostForm";
 import Trending from "../components/Trending";
 
-export default function Timeline() {
+export default function Hashtag() {
   const [posts, setPosts] = useState([]);
-  const [update, setUpdate] = useState(false);
+  const { hashtag } = useParams();
+  console.log(hashtag)
 
   useEffect(() => {
-    const resultPosts = axios.get("http://localhost:5000/posts");
+    const resultPosts = axios.get(
+      "http://localhost:5000/posts/hashtag/" + hashtag
+    );
     resultPosts.then((res) => setPosts(res.data));
     resultPosts.catch((res) => {
       alert(
         "An error occured while trying to fetch the posts, please refresh the page"
       );
     });
-  }, [update]);
+  }, []);
 
   function showPosts() {
     if (!posts) {
@@ -45,14 +48,10 @@ export default function Timeline() {
   return (
     <TimelineStyle>
       <div className="flex-column">
-        <PageTitle title="timeline" />
+        <PageTitle title={`# ${hashtag}`} />
 
         <div className="flex-row">
-          <main>
-            <SendPostForm updatePost={[update, setUpdate]} />
-
-            {showPosts()}
-          </main>
+          <main>{showPosts()}</main>
 
           <aside>
             <Trending />

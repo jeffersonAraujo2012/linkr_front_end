@@ -1,7 +1,11 @@
+import { ReactTagify } from "react-tagify";
 import styled from "styled-components";
 import LinkPost from "./LinkPost";
+import { useNavigate } from "react-router-dom";
 
 export default function Post({ data }) {
+  const navigate = useNavigate();
+
   return (
     <PostStyle>
       <div className="post_owner_image">
@@ -10,7 +14,17 @@ export default function Post({ data }) {
 
       <div className="post_content">
         <p>{data.username}</p>
-        <p>{data.description}</p>
+
+        <ReactTagify
+          tagStyle={tagStyle}
+          tagClicked={(tag) => {
+            const hash = tag.slice(1);
+            navigate(`/hashtag/${hash}`);
+          }}
+        >
+          <p className="post_description">{data.description}</p>
+        </ReactTagify>
+
         <LinkPost url={data.url} />
       </div>
     </PostStyle>
@@ -49,7 +63,7 @@ const PostStyle = styled.div`
       color: white;
       margin-bottom: 7px;
     }
-    & > p:nth-child(2) {
+    .post_description {
       font-size: 17px;
       line-height: 21px;
       color: #b7b7b7;
@@ -57,3 +71,9 @@ const PostStyle = styled.div`
     }
   }
 `;
+
+const tagStyle = {
+  fontWeight: 700,
+  color: "white",
+  cursor: "pointer",
+};

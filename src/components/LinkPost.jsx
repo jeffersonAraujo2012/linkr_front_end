@@ -46,6 +46,7 @@ const LinkPostStyle = styled.a`
     display: flex;
     flex-direction: column;
     padding: 24px 18px;
+    word-break: break-word;
     h2 {
       margin-bottom: 5px;
       font-size: 16px;
@@ -62,7 +63,7 @@ const LinkPostStyle = styled.a`
     }
     p:nth-child(3) {
       margin-top: auto;
-      color: #9b9595;
+      color: #cecece;
     }
   }
 
