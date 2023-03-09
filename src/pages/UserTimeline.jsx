@@ -8,9 +8,10 @@ import Trending from "../components/Trending";
 
 export default function UserTimeline() {
     const { id } = useParams();
-    const [posts, setPosts] = useState([]);
+    const [posts, setPosts] = useState(undefined);
     const [update, setUpdate] = useState(false);
-    console.log(id);
+    let userPicture = "";
+    let userName = "";
 
     useEffect(() => {
         const resultPosts = axios.get(`http://localhost:5000/user/${id}`);
@@ -37,18 +38,22 @@ export default function UserTimeline() {
         }
 
         if (posts) {
+            userPicture = posts[0].picture_user;
+            userName = posts[0].username;
             return posts.map((post) => {
                 return <Post key={post.id} data={post} />;
             });
         }
     }
 
+    if (posts === undefined) return <></>
+
     return (
         <TimelineStyle>
             <div className="flex-column">
                 <TitleStyle>
-                    <img src="https://i0.wp.com/cebolaverde.com.br/wp-content/uploads/2020/08/jakehda_Easy-Resize.com_.jpg?fit=1280%2C672&ssl=1"/>
-                    <p>timeline</p>
+                    <img src={posts[0].picture_user}/>
+                    <p>{posts[0].username}'s posts </p>
                 </TitleStyle>
                 <div className="flex-row">
                     <main>
