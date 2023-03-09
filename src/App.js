@@ -7,6 +7,7 @@ import AuthContext from "./contexts/AuthContext";
 import Timeline from "./pages/Timeline";
 import Hashtag from "./pages/Hashtag";
 import UpdateHashtagContext from "./contexts/UpdataHashtagContext";
+import UserTimeline from "./pages/UserTimeline";
 
 export default function App() {
   const [userData, setUserData] = useState({
@@ -28,6 +29,7 @@ export default function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/timeline" element={Timeline()} />
             <Route path="hashtag/:hashtag" element={<Hashtag />} />
+            <Route path="/usertimeline/:id" element={<UserTimeline />} />
           </Routes>
         </BrowserRouter>
       </AuthContext.Provider>
