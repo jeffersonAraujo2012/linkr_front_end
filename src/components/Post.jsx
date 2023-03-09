@@ -1,7 +1,7 @@
 import { ReactTagify } from "react-tagify";
 import styled from "styled-components";
 import LinkPost from "./LinkPost";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Post({ data }) {
   const navigate = useNavigate();
@@ -13,7 +13,9 @@ export default function Post({ data }) {
       </div>
 
       <div className="post_content">
-        <p>{data.username}</p>
+        <Link to={`/usertimeline/${data.user_id}`}>
+          {data.username}
+        </Link>
 
         <ReactTagify
           tagStyle={tagStyle}
@@ -57,16 +59,17 @@ const PostStyle = styled.div`
     }
   }
   .post_content {
-    & > p:first-child {
+    & > a:first-child {
       font-size: 19px;
       line-height: 23px;
       color: white;
-      margin-bottom: 7px;
+      text-decoration: none;
     }
     .post_description {
       font-size: 17px;
       line-height: 21px;
       color: #b7b7b7;
+      margin-top: 7px;
       margin-bottom: 10px;
     }
   }
