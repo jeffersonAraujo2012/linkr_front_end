@@ -30,16 +30,16 @@ export default function Post({ data, updatePost }) {
 
 
   return (
-    <PostStyle>
+    <PostStyle data-test="post">
       <div className="post_owner_image">
         <img src={data.picture_user} alt={data.username} />
       </div>
 
       <div className="post_content">
         <div>
-          <Link to={`/usertimeline/${data.user_id}`}>
-            {data.username}
-          </Link>
+          <Link to={`/usertimeline/${data.user_id}`} data-test="username">
+          {data.username}
+        </Link>
           <div className="edit_and_delete">
             <img src={edit} />
             <img src={trash} onClick={openModal} />
@@ -66,7 +66,9 @@ export default function Post({ data, updatePost }) {
             navigate(`/hashtag/${hash}`);
           }}
         >
-          <p className="post_description">{data.description}</p>
+          <p className="post_description" data-test="description">
+            {data.description}
+          </p>
         </ReactTagify>
 
         <LinkPost url={data.url} />
@@ -101,12 +103,15 @@ const PostStyle = styled.div`
     }
   }
   .post_content {
+    width: 100%;
+
     & > div > a:first-child {
       font-size: 19px;
       line-height: 23px;
       color: white;
       text-decoration: none;
     }
+
     .post_description {
       font-size: 17px;
       line-height: 21px;
@@ -172,6 +177,25 @@ const PostStyle = styled.div`
           background-color: #1877F2;
           color: #FFFFFF;
         }
+      }
+    }
+  }
+
+  @media (max-width: 1000px) {
+    width: 100%;
+    border-radius: 0;
+
+    .post_content {
+      width: 100%;
+
+      & > a:first-child {
+        font-size: 17px;
+        line-height: 20px;
+      }
+
+      .post_description {
+        font-size: 15px;
+        line-height: 18px;
       }
     }
   }

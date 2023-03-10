@@ -80,6 +80,15 @@ const TimelineStyle = styled.div`
 
     h1 {
       margin-bottom: 44px;
+
+      @media (max-width: 1000px) {
+        margin-bottom: 20px;
+        margin-left: 16px;
+      }
+    }
+
+    @media (max-width: 1000px) {
+      width: 100%;
     }
   }
 
@@ -87,6 +96,13 @@ const TimelineStyle = styled.div`
     width: fit-content;
     display: flex;
     justify-content: center;
+
+    @media (max-width: 1000px) {
+      &,
+      & main {
+        width: 100%;
+      }
+    }
   }
 
   .no-posts {
@@ -116,5 +132,9 @@ const TimelineStyle = styled.div`
 
   aside {
     margin-left: 24px;
+
+    @media (max-width: 1000px) {
+      display: none;
+    }
   }
 `;

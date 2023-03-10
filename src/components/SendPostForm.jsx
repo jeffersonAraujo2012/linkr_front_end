@@ -40,7 +40,7 @@ export default function SendPostForm({ updatePost }) {
   }
 
   return (
-    <SendPostFormStyle>
+    <SendPostFormStyle data-test="publish-box">
       <div className="post_owner_image">
         <img src={mockUser.picture_user} alt={mockUser.username} />
       </div>
@@ -54,13 +54,15 @@ export default function SendPostForm({ updatePost }) {
           onChange={(e) => setUrl(e.currentTarget.value)}
           required
           disabled={publishing}
+          data-test="link"
         />
         <textarea
           value={description}
           onChange={(e) => setDescription(e.currentTarget.value)}
           disabled={publishing}
+          data-test="description"
         />
-        <button disabled={publishing}>
+        <button disabled={publishing} data-test="publish-btn">
           {publishing ? "Publishing..." : "Publish"}
         </button>
       </form>
@@ -141,6 +143,16 @@ const SendPostFormStyle = styled.div`
 
       background-color: #1877f2;
       cursor: pointer;
+    }
+  }
+
+  @media (max-width: 1000px) {
+    width: 100%;
+    border-radius: 0;
+    margin-bottom: 16px;
+
+    .post_owner_image {
+      display: none;
     }
   }
 `;
