@@ -67,7 +67,8 @@ export default function SearchBar() {
 }
 
 const Test = styled.div`
-  background-color: black;
+  position: absolute;
+  top: 10px;
   p {
     color: white;
   }
@@ -107,6 +108,8 @@ const EachUser = styled.button`
   display: flex;
   align-items: center;
   margin-left: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px; 
   background-color: #e7e7e7;
   border: none;
   cursor: pointer;

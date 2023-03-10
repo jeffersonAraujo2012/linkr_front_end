@@ -4,6 +4,7 @@ import { PulseLoader } from "react-spinners";
 import styled from "styled-components";
 import PageTitle from "../components/PageTitle";
 import Post from "../components/Post";
+import SearchBar from "../components/SearchBar";
 import SendPostForm from "../components/SendPostForm";
 import Trending from "../components/Trending";
 
@@ -44,6 +45,7 @@ export default function Timeline() {
 
   return (
     <TimelineStyle>
+      <SearchBar />
       <div className="flex-column">
         <PageTitle title="timeline" />
 
