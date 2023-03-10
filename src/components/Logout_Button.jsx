@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 export default function Logout_Button() {
     const navigate = useNavigate();
 
-
+    return (
     <LogOutBar data-test="menu">
         <p data-test="logout" onClick={() => {
                 localStorage.clear()
@@ -13,7 +13,7 @@ export default function Logout_Button() {
             Logout
         </p>
     </LogOutBar>
-}
+)}
 
 const LogOutBar = styled.div`
     position: absolute;

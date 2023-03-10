@@ -20,27 +20,26 @@ export default function PaginaPrincipal() {
         event.preventDefault()
 
         if (email === '' || password === '') {
-            alert('Please, fill in all required fields.')
+            alert('Por favor, preencha todos os campos obrigatórios.')
             setDisable(false)
             return false;
         }
 
-
         axios
-            .post(`${process.env.REACT_APP_API_URL}/sign-in`, {
+            .post(`${process.env.REACT_APP_API_URL}/auth/login`, {
                 email: email,
                 password: password
             } )
-            .then((request) => {
-                setToken(request.data.token)
-                localStorage.setItem('token', request.data.token);
+            .then((response) => {
+                setToken(response.data.access_token)
+                localStorage.setItem('access_token', response.data.access_token);
                 setDisable(true);
                 home()
             } )
             .catch((error) => {
                 console.log(error)
                 if (error.response.status === 401) {
-                    alert('Incorrect email or password')
+                    alert('E-mail ou senha incorretos')
                 }
                 setDisable(false)
             })
@@ -54,12 +53,12 @@ export default function PaginaPrincipal() {
                 <p>the best links on the web</p>
             </Logo>
             <SignIn>
-                    <form onSubmit={loginConta}>
-                        <input data-test="email" disabled={disable} onChange={(e) => setEmail(e.target.value)} value={email} type='email' placeholder="e-mail" name="email"></input>
-                        <input data-test="password" disabled={disable} onChange={(e) => setPassword(e.target.value)} value={password} type='password' placeholder="password" name="password"></input>
-                        <button data-test="login-btn" disabled={disable} type="submit">Log in</button>
-                    </form>
-                <Link to={"/signup"}  data-test="sign-up-link" ><p>First time? Create an account!</p></Link>
+                <form onSubmit={loginConta}>
+                    <input data-testid="email" disabled={disable} onChange={(e) => setEmail(e.target.value)} value={email} type='email' placeholder="e-mail" name="email"></input>
+                    <input data-testid="password" disabled={disable} onChange={(e) => setPassword(e.target.value)} value={password} type='password' placeholder="password" name="password"></input>
+                    <button data-testid="login-btn" disabled={disable} type="submit">Entrar</button>
+                </form>
+                <Link to={"/signup"}  data-testid="sign-up-link" ><p>Primeira vez? Crie uma conta!</p></Link>
             </SignIn>
         </PrincipalStyled>
     )
@@ -70,7 +69,7 @@ const PrincipalStyled = styled.div`
     height: 100vh;
 
     display: flex;
-    align-itens:center;
+    align-items:center;
 `
 const Logo = styled.div`
     display: flex;

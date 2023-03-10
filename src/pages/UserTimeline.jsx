@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import styled from "styled-components";
+import Logout_Button from "../components/Logout_Button";
 import Post from "../components/Post";
 import SearchBar from "../components/SearchBar";
 import Trending from "../components/Trending";
@@ -52,6 +53,7 @@ export default function UserTimeline() {
 
   return (
     <TimelineStyle>
+      <Logout_Button/>
       <SearchBar />
       <div className="flex-column">
         <TitleStyle>

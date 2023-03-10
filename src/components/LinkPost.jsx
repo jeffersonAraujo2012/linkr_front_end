@@ -7,6 +7,10 @@ export default function LinkPost({ url }) {
   const [metadata, setMetadata] = useState(null);
 
   useEffect(() => {
+    if (url.slice(0, 8) !== "https://") {
+      const newUrl = `https://${url}`
+      url = newUrl;
+    }
     const fetchMetadata = async () => {
       const data = await axios
         .get(process.env.REACT_APP_API_URL + "/utils/urls/metadata?url=" + url)
