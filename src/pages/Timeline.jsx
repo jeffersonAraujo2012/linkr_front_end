@@ -12,7 +12,7 @@ export default function Timeline() {
   const [update, setUpdate] = useState(false);
 
   useEffect(() => {
-    const resultPosts = axios.get("http://localhost:5000/posts");
+    const resultPosts = axios.get(process.env.REACT_APP_API_URL + "/posts");
     resultPosts.then((res) => setPosts(res.data));
     resultPosts.catch((res) => {
       alert(

@@ -17,7 +17,7 @@ export default function PaginaPrincipal() {
     function loginConta(event){
         event.preventDefault()
         axios
-            .post(`http://localhost:5000/`, {
+            .post(process.env.REACT_APP_API_URL, {
                 email: email,
                 password: password
             } )

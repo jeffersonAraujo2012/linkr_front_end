@@ -9,7 +9,7 @@ export default function Trending() {
   const [updataHashtags] = useContext(UpdateHashtagContext);
 
   useEffect(() => {
-    const promiseHashtags = axios.get("http://localhost:5000/hashtags");
+    const promiseHashtags = axios.get(process.env.REACT_APP_API_URL + "/hashtags");
     promiseHashtags.then((res) => {
       setHashtags(res.data);
     });

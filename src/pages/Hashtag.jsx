@@ -14,7 +14,7 @@ export default function Hashtag() {
 
   useEffect(() => {
     const resultPosts = axios.get(
-      "http://localhost:5000/posts/hashtag/" + hashtag
+      process.env.REACT_APP_API_URL + "/posts/hashtag/" + hashtag
     );
     resultPosts.then((res) => setPosts(res.data));
     resultPosts.catch((res) => {

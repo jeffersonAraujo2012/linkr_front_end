@@ -20,7 +20,7 @@ export default function SendPostForm({ updatePost }) {
     e.preventDefault();
     setPublishing(true);
 
-    const sendPromise = axios.post("http://localhost:5000/posts", {
+    const sendPromise = axios.post(process.env.REACT_APP_API_URL + "/posts", {
       url: url,
       description: description,
       userId: prompt("Mock -- Qual id do usuário?"),
