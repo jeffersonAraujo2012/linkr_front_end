@@ -9,7 +9,7 @@ export default function LinkPost({ url }) {
   useEffect(() => {
     const fetchMetadata = async () => {
       const data = await axios
-        .get("http://localhost:5000/utils/urls/metadata?url=" + url)
+        .get(process.env.REACT_APP_API_URL + "/utils/urls/metadata?url=" + url)
         .then((res) => res.data);
       setMetadata(data);
     };

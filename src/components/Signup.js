@@ -15,7 +15,7 @@ export default function Signup() {
     function dadosConta(event){
         event.preventDefault();
         axios
-            .post(`http://127.0.0.1:5000/cadastro`, {
+            .post(`${process.env.REACT_APP_API_URL}/cadastro`, {
                 email: email,
                 name: name,
                 password: password,
