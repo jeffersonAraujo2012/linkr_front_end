@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import styled from "styled-components"
+import styled from "styled-components";
 
 
 export default function Signup() {
@@ -60,10 +60,10 @@ export default function Signup() {
             </Logo>
             <SignUp>
                 <form onSubmit={dadosConta}>  
-                    <input data-test="email" disabled={disable} onChange={(e) => setEmail(e.target.value)} value={email} type='email' placeholder="e-mail" name="email"></input>
-                    <input data-test="password" disabled={disable} onChange={(e) => setPassword(e.target.value)} value={password} type='password' placeholder="password" name="password"></input>
-                    <input data-test="username" disabled={disable} onChange={(e) => setUsername(e.target.value)} value={username} type='text' placeholder="username" name="username"></input>
-                    <input data-test="picture-url" disabled={disable} onChange={(e) => setPicture_url(e.target.value)} value={picture_url } type='text' placeholder="image" name="image"></input>
+                    <input data-test="email" disabled={disable} onChange={(e) => setEmail(e.target.value)} value={email} type='email' placeholder="e-mail" name="email" autoComplete="off" />
+                    <input data-test="password" disabled={disable} onChange={(e) => setPassword(e.target.value)} value={password} type='password' placeholder="password" name="password" autoComplete="off" />
+                    <input data-test="username" disabled={disable} onChange={(e) => setUsername(e.target.value)} value={username} type='text' placeholder="username" name="username" autoComplete="off" />
+                    <input data-test="picture-url" disabled={disable} onChange={(e) => setPicture_url(e.target.value)} value={picture_url } type='text' placeholder="image" name="image" autoComplete="off" />
                     <button data-test="sign-up-btn" disabled={disable} type="submit">Sign Up</button>
                 </form>
                 <Link to={"/"} data-test="login-link"><p>Switch back to log in!</p></Link>
@@ -71,6 +71,7 @@ export default function Signup() {
         </PrincipalStyled>
     )
 }
+
 
 const PrincipalStyled = styled.div`
     width: 100%;
