@@ -6,9 +6,9 @@ import styled from "styled-components"
 
 export default function Signup() {
     const [email, setEmail] = useState("");
-    const [name, setName] = useState("");
+    const [username, setUsername ] = useState("");
     const [password, setPassword] = useState("");
-    const [pictureUrl, setpictureUrl] = useState("");
+    const [picture_url, setPicture_url ] = useState("");
     const [disable, setDisable] = useState(false);
     const navigate = useNavigate();
 
@@ -16,7 +16,7 @@ export default function Signup() {
         event.preventDefault();
         setDisable(true)
 
-        if (email === '' || password === '' || name === '' || pictureUrl === '') {
+        if (email === '' || password === '' || username === '' || picture_url  === '') {
             alert('Please, fill in all required fields.')
             return false;
         }
@@ -24,9 +24,9 @@ export default function Signup() {
         axios
             .post(`${process.env.REACT_APP_API_URL}/sign-up`, {
                 email: email,
-                name: name,
+                username: username,
                 password: password,
-                pictureUrl: pictureUrl
+                picture_url : picture_url 
             } )
             .then((request) => {
                 console.log(request.data)
@@ -62,8 +62,8 @@ export default function Signup() {
                 <form onSubmit={dadosConta}>  
                     <input data-test="email" disabled={disable} onChange={(e) => setEmail(e.target.value)} value={email} type='email' placeholder="e-mail" name="email"></input>
                     <input data-test="password" disabled={disable} onChange={(e) => setPassword(e.target.value)} value={password} type='password' placeholder="password" name="password"></input>
-                    <input data-test="username" disabled={disable} onChange={(e) => setName(e.target.value)} value={name} type='text' placeholder="username" name="username"></input>
-                    <input data-test="picture-url" disabled={disable} onChange={(e) => setpictureUrl(e.target.value)} value={pictureUrl} type='text' placeholder="image" name="image"></input>
+                    <input data-test="username" disabled={disable} onChange={(e) => setUsername(e.target.value)} value={username} type='text' placeholder="username" name="username"></input>
+                    <input data-test="picture-url" disabled={disable} onChange={(e) => setPicture_url(e.target.value)} value={picture_url } type='text' placeholder="image" name="image"></input>
                     <button data-test="sign-up-btn" disabled={disable} type="submit">Sign Up</button>
                 </form>
                 <Link to={"/"} data-test="login-link"><p>Switch back to log in!</p></Link>
