@@ -12,7 +12,6 @@ export default function SearchBar() {
   const [result, setResult] = useState(undefined);
   const navigate = useNavigate();
   const [updateUserPage, setUpdateUserPage] = useContext(UpdateUserPage);
-  //console.log(search)
 
   function searchUser(event) {
     const searchTerm = event.target.value;
@@ -44,18 +43,17 @@ export default function SearchBar() {
             value={search}
             onChange={searchUser}
             required
+            data-test="search"
           />
           <AiOutlineSearch />
           {result?.length !== 0 ? (
             result?.map(
               (r) => (
-                //<Link key={r.picture_url} to={`/usertimeline/${r.id}`}>
-                <EachUser key={r.id} onClick={() => handleClick(r.id)}>
+                <EachUser key={r.id} onClick={() => handleClick(r.id)} data-test="user-search">
                   <img src={r.picture_url} />
                   <p>{r.username}</p>
                 </EachUser>
               )
-              //</Link>
             )
           ) : (
             <></>
@@ -84,7 +82,7 @@ const ContainerInput = styled.div`
   input {
     font-size: 19px;
     color: #515151;
-    width: 100%;
+    width: 563px;
     height: 45px;
     padding-left: 15px;
     border: none;
