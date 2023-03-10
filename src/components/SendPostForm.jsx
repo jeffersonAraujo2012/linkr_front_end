@@ -23,7 +23,7 @@ export default function SendPostForm({ updatePost }) {
     const sendPromise = axios.post(process.env.REACT_APP_API_URL + "/posts", {
       url: url,
       description: description,
-      userId: prompt("Mock -- Qual id do usuário?"),
+      user_id: prompt("Mock -- Qual id do usuário?"),
     });
 
     sendPromise.then((res) => {
