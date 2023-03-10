@@ -6,15 +6,26 @@ import trash from "../assets/delete.png"
 import edit from "../assets/edit.png"
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import Timeline from "../pages/Timeline";
 
-export default function Post({ data }) {
+export default function Post({ data, updatePost }) {
   const navigate = useNavigate();
-  const [post, setPost] = useState(null)
   const [modal, setModal] = useState(false);
-  const [update, setUpdate] = useState(false)
+  const [update, setUpdate] = updatePost;
 
   function openModal() {
     setModal(true)
+  }
+
+  function deletePost() {
+    console.log(data)
+
+    axios.delete(process.env.REACT_APP_API_URL + "/posts", { data })
+    .then(() => {
+        alert('post deletado com sucesso!')
+        setUpdate(!update);
+      })
+    .catch((err) => alert('Não foi possível deletar o post.'))
   }
 
 
@@ -42,7 +53,7 @@ export default function Post({ data }) {
             <button className="no" onClick={() => setModal(false)}>No, go back</button>
             <button className="yes" onClick={() => {
               setModal(false)
-              // deletePost()
+              deletePost()
               }}>Yes, delete it</button>
           </div>
         </div>
