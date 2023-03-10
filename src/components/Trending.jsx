@@ -15,22 +15,13 @@ export default function Trending() {
     });
   }, [updataHashtags]);
 
-  const mockHashtags = [
-    "react",
-    "javascript",
-    "angular",
-    "vue3",
-    "drivenbootcamp",
-    "PythonÉDemais",
-  ];
-
   return (
     <TrandingStyle>
       <h2>trending</h2>
       <div className="divider" />
       {hashtags.map((hashtag) => {
         return (
-          <Link to={`/hashtag/${hashtag.name}`}>{"# " + hashtag.name}</Link>
+          <Link key={hashtag.name} to={`/hashtag/${hashtag.name}`}>{"# " + hashtag.name}</Link>
         );
       })}
     </TrandingStyle>
