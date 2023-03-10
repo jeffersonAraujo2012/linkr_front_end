@@ -10,7 +10,7 @@ import Trending from "../components/Trending";
 export default function Hashtag() {
   const [posts, setPosts] = useState([]);
   const { hashtag } = useParams();
-  console.log(hashtag)
+  console.log(hashtag);
 
   useEffect(() => {
     const resultPosts = axios.get(
@@ -48,7 +48,7 @@ export default function Hashtag() {
   return (
     <TimelineStyle>
       <div className="flex-column">
-        <PageTitle title={`# ${hashtag}`} />
+        <PageTitle title={`# ${hashtag}`} data-test="hashtag-title" />
 
         <div className="flex-row">
           <main>{showPosts()}</main>
@@ -77,6 +77,14 @@ const TimelineStyle = styled.div`
 
     h1 {
       margin-bottom: 44px;
+
+      @media (max-width: 1000px) {
+        margin-left: 16px;
+      }
+    }
+
+    @media (max-width: 1000px) {
+      width: 100%;
     }
   }
 
@@ -84,6 +92,13 @@ const TimelineStyle = styled.div`
     width: fit-content;
     display: flex;
     justify-content: center;
+
+    @media (max-width: 1000px) {
+      &,
+      & main {
+        width: 100%;
+      }
+    }
   }
 
   .no-posts {
@@ -113,5 +128,9 @@ const TimelineStyle = styled.div`
 
   aside {
     margin-left: 24px;
+
+    @media (max-width: 1000px) {
+      display: none;
+    }
   }
 `;

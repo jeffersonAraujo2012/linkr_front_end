@@ -86,12 +86,23 @@ const TimelineStyle = styled.div`
     h1 {
       margin-bottom: 44px;
     }
+
+    @media (max-width: 1000px) {
+      width: 100%;
+    }
   }
 
   .flex-row {
     width: fit-content;
     display: flex;
     justify-content: center;
+
+    @media (max-width: 1000px) {
+      &,
+      & main {
+        width: 100%;
+      }
+    }
   }
 
   .no-posts {
@@ -121,6 +132,10 @@ const TimelineStyle = styled.div`
 
   aside {
     margin-left: 24px;
+
+    @media (max-width: 1000px) {
+      display: none;
+    }
   }
 `;
 
@@ -141,5 +156,9 @@ const TitleStyle = styled.div`
     width: 50px;
     height: 50px;
     border-radius: 50px;
+  }
+
+  @media (max-width: 1000px) {
+    margin-left: 16px;
   }
 `;

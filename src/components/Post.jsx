@@ -7,13 +7,13 @@ export default function Post({ data }) {
   const navigate = useNavigate();
 
   return (
-    <PostStyle>
+    <PostStyle data-test="post">
       <div className="post_owner_image">
         <img src={data.picture_user} alt={data.username} />
       </div>
 
       <div className="post_content">
-        <Link to={`/usertimeline/${data.user_id}`}>
+        <Link to={`/usertimeline/${data.user_id}`} data-test="username">
           {data.username}
         </Link>
 
@@ -24,7 +24,9 @@ export default function Post({ data }) {
             navigate(`/hashtag/${hash}`);
           }}
         >
-          <p className="post_description">{data.description}</p>
+          <p className="post_description" data-test="description">
+            {data.description}
+          </p>
         </ReactTagify>
 
         <LinkPost url={data.url} />
@@ -59,18 +61,40 @@ const PostStyle = styled.div`
     }
   }
   .post_content {
+    width: 100%;
+
     & > a:first-child {
       font-size: 19px;
       line-height: 23px;
       color: white;
       text-decoration: none;
     }
+
     .post_description {
       font-size: 17px;
       line-height: 21px;
       color: #b7b7b7;
       margin-top: 7px;
       margin-bottom: 10px;
+    }
+  }
+
+  @media (max-width: 1000px) {
+    width: 100%;
+    border-radius: 0;
+
+    .post_content {
+      width: 100%;
+
+      & > a:first-child {
+        font-size: 17px;
+        line-height: 20px;
+      }
+
+      .post_description {
+        font-size: 15px;
+        line-height: 18px;
+      }
     }
   }
 `;

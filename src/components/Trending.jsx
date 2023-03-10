@@ -9,19 +9,27 @@ export default function Trending() {
   const [updataHashtags] = useContext(UpdateHashtagContext);
 
   useEffect(() => {
-    const promiseHashtags = axios.get(process.env.REACT_APP_API_URL + "/hashtags");
+    const promiseHashtags = axios.get(
+      process.env.REACT_APP_API_URL + "/hashtags"
+    );
     promiseHashtags.then((res) => {
       setHashtags(res.data);
     });
   }, [updataHashtags]);
 
   return (
-    <TrandingStyle>
+    <TrandingStyle data-test="trending">
       <h2>trending</h2>
       <div className="divider" />
       {hashtags.map((hashtag) => {
         return (
-          <Link key={hashtag.name} to={`/hashtag/${hashtag.name}`}>{"# " + hashtag.name}</Link>
+          <Link
+            key={hashtag.name}
+            to={`/hashtag/${hashtag.name}`}
+            data-test="trending"
+          >
+            {"# " + hashtag.name}
+          </Link>
         );
       })}
     </TrandingStyle>

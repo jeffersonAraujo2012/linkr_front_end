@@ -19,7 +19,12 @@ export default function LinkPost({ url }) {
   if (!metadata) return null;
 
   return (
-    <LinkPostStyle linkImg={metadata.image} href={url} target="_blank">
+    <LinkPostStyle
+      linkImg={metadata.image}
+      href={url}
+      target="_blank"
+      data-test="link"
+    >
       <div className="link_content">
         <h2>{metadata.title}</h2>
         <p>{metadata.description}</p>
@@ -45,7 +50,10 @@ const LinkPostStyle = styled.a`
   .link_content {
     display: flex;
     flex-direction: column;
+
+    width: 100%;
     padding: 24px 18px;
+
     word-break: break-word;
     h2 {
       margin-bottom: 5px;
@@ -77,5 +85,26 @@ const LinkPostStyle = styled.a`
 
     border-top-right-radius: 11px;
     border-bottom-right-radius: 11px;
+  }
+
+  @media (max-width: 1000px) {
+    min-height: 115px;
+
+    .link_image {
+      width: 30%;
+    }
+
+    .link_content {
+      padding: 10px;
+
+      h2 {
+        font-size: 11px;
+        line-height: 13px;
+      }
+      p {
+        font-size: 9px;
+        line-height: 11px;
+      }
+    }
   }
 `;
