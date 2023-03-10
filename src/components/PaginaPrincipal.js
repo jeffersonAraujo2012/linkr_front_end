@@ -5,10 +5,12 @@ import styled from "styled-components"
 import AuthContext from "../contexts/AuthContext"
 
 export default function PaginaPrincipal() {
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { userData, setUserData } = useContext(AuthContext);
+    const [disable, setDisable] = useState(false);
     const navigate = useNavigate();
+    const { setToken } = useContext(AuthContext);
 
     function home(){
         navigate("/home")
@@ -16,39 +18,69 @@ export default function PaginaPrincipal() {
 
     function loginConta(event){
         event.preventDefault()
+
+        if (email === '' || password === '') {
+            alert('Please, fill in all required fields.')
+            setDisable(false)
+            return false;
+        }
+
+
         axios
-            .post(process.env.REACT_APP_API_URL, {
+            .post(`${process.env.REACT_APP_API_URL}/sign-in`, {
                 email: email,
                 password: password
             } )
             .then((request) => {
-                setUserData({...userData, token: request.data});
+                setToken(request.data.token)
+                localStorage.setItem('token', request.data.token);
+                setDisable(true);
                 home()
             } )
-            .catch((erro) => console.log(erro))
+            .catch((error) => {
+                console.log(error)
+                if (error.response.status === 401) {
+                    alert('Incorrect email or password')
+                }
+                setDisable(false)
+            })
     }
 
     return (
         <PrincipalStyled>
-            <div>
+            <Logo>
                 <h1>linkr</h1>
                 <p>save, share and discover</p>
                 <p>the best links on the web</p>
-            </div>
-            <form onSubmit={loginConta}>    
-                <input type="text" value={email} onChange={e => setEmail(e.target.value)} placeholder="email" required></input>
-                <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="senha" required></input>
-                <button type="submit" >Log In</button>
-            </form>
-            <Link to={"/signup"}><p>First time? Create an account!</p></Link>
+            </Logo>
+            <SignIn>
+                    <form onSubmit={loginConta}>
+                        <input data-test="email" disabled={disable} onChange={(e) => setEmail(e.target.value)} value={email} type='email' placeholder="e-mail" name="email"></input>
+                        <input data-test="password" disabled={disable} onChange={(e) => setPassword(e.target.value)} value={password} type='password' placeholder="password" name="password"></input>
+                        <button data-test="login-btn" disabled={disable} type="submit">Log in</button>
+                    </form>
+                <Link to={"/signup"}  data-test="sign-up-link" ><p>First time? Create an account!</p></Link>
+            </SignIn>
         </PrincipalStyled>
     )
 }
 
 const PrincipalStyled = styled.div`
-    width: 400px;
+    width: 100%;
+    height: 100vh;
+
     display: flex;
-    justify-content: space-between;
+    align-itens:center;
+`
+const Logo = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding-left: 144px;
+    width: 60%;
+    height: 100%;
+    background: #000000;
     h1{
         text-align: center;
         font-family: 'Passion One';
@@ -56,7 +88,6 @@ const PrincipalStyled = styled.div`
         font-weight: 700;
         font-size: 106px;
         line-height: 117px;
-        background: #000000;
         color: #ffffff;
     }
     p {
@@ -67,13 +98,24 @@ const PrincipalStyled = styled.div`
         line-height: 64px;
         color: #ffffff;
     }
+    @media (max-width: 1050px) {
+        display: none;
+    }
+`
+const SignIn = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding-left: 60px;
+    padding-rigth: 144px;
+    width: 450px;
     input{
-        width: 303px;
-        height: 45px;
-        margin: 6px 36px;
-        
-        border: 1px solid #D5D5D5;
-        border-radius: 5px;
+        width: 429px;
+        height: 65px;
+
+        background: #FFFFFF;
+        border-radius: 6px;
         ::placeholder{
             padding-left: 15px;
             font-family: 'Raleway';
@@ -90,7 +132,14 @@ const PrincipalStyled = styled.div`
         height: 65px;
         left: 956px;
         top: 473px;
+        font-family: 'Oswald';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 27px;
+        line-height: 40px;
 
+
+        color: #FFFFFF;
         background: #1877F2;
         border-radius: 6px;
     }
@@ -105,17 +154,9 @@ const PrincipalStyled = styled.div`
         font-weight: 400;
         font-size: 20px;
         line-height: 24px;
-        /* identical to box height */
 
         text-decoration-line: underline;
 
         color: #FFFFFF;
-        p{
-            margin-top: 25px;
-            text-align: center;
-            text-decoration: none;
-
-            color: #000000;
-        }
     }
 `

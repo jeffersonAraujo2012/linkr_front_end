@@ -8,22 +8,42 @@ export default function Signup() {
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPassword, setconfirmPassword] = useState("");
     const [pictureUrl, setpictureUrl] = useState("");
+    const [disable, setDisable] = useState(false);
     const navigate = useNavigate();
 
     function dadosConta(event){
         event.preventDefault();
+        setDisable(true)
+
+        if (email === '' || password === '' || name === '' || pictureUrl === '') {
+            alert('Please, fill in all required fields.')
+            return false;
+        }
+
         axios
-            .post(`${process.env.REACT_APP_API_URL}/cadastro`, {
+            .post(`${process.env.REACT_APP_API_URL}/sign-up`, {
                 email: email,
                 name: name,
                 password: password,
-                confirmPassword: confirmPassword,
                 pictureUrl: pictureUrl
             } )
-            .then(pagina)
-            .catch((erro) => console.log(erro))
+            .then((request) => {
+                console.log(request.data)
+                setDisable(true)
+                pagina()
+            })
+            .catch((error) => {
+                console.log(error)
+                setDisable(false)
+                if (error.response.status === 409) {
+                    alert('Email is already registered!')
+                }
+                if (error.response.status === 400) {
+                    alert('Make sure your password is at least 6 characters long.')
+                }
+
+            })
     }
 
     function pagina(){
@@ -32,96 +52,118 @@ export default function Signup() {
     }
 
     return (
-        <CadastroStyled>
-            <div>
+        <PrincipalStyled>
+            <Logo>
                 <h1>linkr</h1>
                 <p>save, share and discover</p>
                 <p>the best links on the web</p>
-            </div>
-            <form onSubmit={dadosConta}>  
-                <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="nome" required></input>  
-                <input type="text" value={email} onChange={e => setEmail(e.target.value)} placeholder="email" required></input>
-                <input type="text" value={password} onChange={e => setPassword(e.target.value)} placeholder="senha" required></input>
-                <input type="text" value={confirmPassword} onChange={e => setconfirmPassword(e.target.value)} placeholder="Confirme a senha" required></input>
-                <input type="text" value={pictureUrl} onChange={e => setpictureUrl(e.target.value)} placeholder="Picture url" required></input>
-                <button type="submit" >Sign Up</button>
-            </form>
-            <Link to={"/"}><p>Switch back to log in!</p></Link>
-        </CadastroStyled>
+            </Logo>
+            <SignUp>
+                <form onSubmit={dadosConta}>  
+                    <input data-test="email" disabled={disable} onChange={(e) => setEmail(e.target.value)} value={email} type='email' placeholder="e-mail" name="email"></input>
+                    <input data-test="password" disabled={disable} onChange={(e) => setPassword(e.target.value)} value={password} type='password' placeholder="password" name="password"></input>
+                    <input data-test="username" disabled={disable} onChange={(e) => setName(e.target.value)} value={name} type='text' placeholder="username" name="username"></input>
+                    <input data-test="picture-url" disabled={disable} onChange={(e) => setpictureUrl(e.target.value)} value={pictureUrl} type='text' placeholder="image" name="image"></input>
+                    <button data-test="sign-up-btn" disabled={disable} type="submit">Sign Up</button>
+                </form>
+                <Link to={"/"} data-test="login-link"><p>Switch back to log in!</p></Link>
+            </SignUp>
+        </PrincipalStyled>
     )
 }
 
-const CadastroStyled = styled.div`
-width: 400px;
-display: flex;
-justify-content: space-between;
-h1{
-    text-align: center;
-    font-family: 'Passion One';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 106px;
-    line-height: 117px;
+const PrincipalStyled = styled.div`
+    width: 100%;
+    height: 100vh;
+
+    display: flex;
+    align-itens:center;
+`
+const Logo = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding-left: 144px;
+    width: 60%;
+    height: 100%;
     background: #000000;
-    color: #ffffff;
-}
-p {
-    font-family: 'Oswald';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 43px;
-    line-height: 64px;
-    color: #ffffff;
-}
-input{
-    width: 303px;
-    height: 45px;
-    margin: 6px 36px;
-    
-    border: 1px solid #D5D5D5;
-    border-radius: 5px;
-    ::placeholder{
-        padding-left: 15px;
-        font-family: 'Raleway';
+    h1{
+        text-align: center;
+        font-family: 'Passion One';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 106px;
+        line-height: 117px;
+        color: #ffffff;
+    }
+    p {
+        font-family: 'Oswald';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 43px;
+        line-height: 64px;
+        color: #ffffff;
+    }
+    @media (max-width: 1050px) {
+        display: none;
+    }
+`
+const SignUp = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding-left: 60px;
+    padding-rigth: 144px;
+    width: 450px;
+    input{
+        width: 429px;
+        height: 65px;
+
+        background: #FFFFFF;
+        border-radius: 6px;
+        ::placeholder{
+            padding-left: 15px;
+            font-family: 'Raleway';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 23px;
+
+            color: #000000;
+        }
+    }
+    button{
+        width: 429px;
+        height: 65px;
+        left: 956px;
+        top: 473px;
+        font-family: 'Oswald';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 27px;
+        line-height: 40px;
+
+
+        color: #FFFFFF;
+        background: #1877F2;
+        border-radius: 6px;
+    }
+    a{
+        width: 262px;
+        height: 24px;
+        left: 1044px;
+        top: 560px;
+
+        font-family: 'Lato';
         font-style: normal;
         font-weight: 400;
         font-size: 20px;
-        line-height: 23px;
+        line-height: 24px;
 
-        color: #000000;
+        text-decoration-line: underline;
+
+        color: #FFFFFF;
     }
-}
-button{
-    width: 429px;
-    height: 65px;
-    left: 956px;
-    top: 473px;
-
-    background: #1877F2;
-    border-radius: 6px;
-}
-a{
-    width: 262px;
-    height: 24px;
-    left: 1044px;
-    top: 560px;
-
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 24px;
-    /* identical to box height */
-
-    text-decoration-line: underline;
-
-    color: #FFFFFF;
-    p{
-        margin-top: 25px;
-        text-align: center;
-        text-decoration: none;
-
-        color: #000000;
-    }
-}
 `
