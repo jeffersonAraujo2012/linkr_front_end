@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { PulseLoader } from "react-spinners";
 import styled from "styled-components";
+import Header from "../components/Header";
 import PageTitle from "../components/PageTitle";
 import Post from "../components/Post";
 import SearchBar from "../components/SearchBar";
@@ -45,7 +46,7 @@ export default function Timeline() {
 
   return (
     <TimelineStyle>
-      <SearchBar />
+      <Header/>
       <div className="flex-column">
         <PageTitle title="timeline" />
 
@@ -72,6 +73,9 @@ const TimelineStyle = styled.div`
 
   min-height: 100vh;
   padding-top: 78px;
+  @media (max-width: 1000px) {
+    margin-top: 50px;
+  }
 
   .flex-column {
     display: flex;

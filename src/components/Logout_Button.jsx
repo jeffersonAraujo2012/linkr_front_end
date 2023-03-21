@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { useNavigate } from 'react-router-dom'
 
-export default function Logout_Button() {
+export default function Logout_Button(showLogout) {
     const navigate = useNavigate();
 
     return (
-    <LogOutBar data-test="menu">
+    <LogOutBar data-test="menu" showLogout={showLogout}>
         <p data-test="logout" onClick={() => {
                 localStorage.clear()
                 navigate('/')
@@ -16,16 +16,20 @@ export default function Logout_Button() {
 )}
 
 const LogOutBar = styled.div`
-    position: absolute;
-    top: 65px;
+    display: ${props => props.showLogout ? 'none' : 'flex'};
+    align-items: flex-start;
+    justify-content: center;
+    position: fixed;
+    top: 72px;
     right: 0;
-    padding: 17px;
-    border-radius: 0 0 0 14px;
+    border-radius: 0 0 0 20px;
     background-color: #171717;
-    width: 110px;
+    width: 130px;
+    height: 47px;
+    padding-top: 10px;
     z-index: 3;
+    cursor: pointer;
     p{
-        text-align: center;
         font-family: Lato, sans-serif;
         font-weight: 700;
         font-size: 17px;
