@@ -1,10 +1,10 @@
 import axios from "axios";
-import { useState, forceUpdate, useContext } from "react";
+import { useState, useContext } from "react";
 import React from "react";
 import { DebounceInput } from "react-debounce-input";
 import styled from "styled-components";
 import { AiOutlineSearch } from "react-icons/ai";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import UpdateUserPage from "../contexts/UpdateUserPage";
 
 export default function SearchBar() {
@@ -31,8 +31,7 @@ export default function SearchBar() {
   }
 
   return (
-    <>
-      <Test>
+      <ContainerSearchBar>
         <ContainerInput>
           <DebounceInput
             minLength={3}
@@ -45,7 +44,7 @@ export default function SearchBar() {
             required
             data-test="search"
           />
-          <AiOutlineSearch />
+          <AiOutlineSearch onClick={() => handleClick(result[0].id)}/>
           {result?.length !== 0 ? (
             result?.map(
               (r) => (
@@ -59,16 +58,20 @@ export default function SearchBar() {
             <></>
           )}
         </ContainerInput>
-      </Test>
-    </>
+      </ContainerSearchBar>
   );
 }
 
-const Test = styled.div`
+const ContainerSearchBar = styled.div`
   position: absolute;
-  top: 10px;
-  p {
-    color: white;
+  top: 50%;
+  left: 50%;
+  margin-top: -23px;
+  margin-left: -282px;
+  @media (max-width: 1000px) {
+    top: 120%;
+    margin-top: 0;
+    margin-left: -45vw;
   }
 `;
 
@@ -82,8 +85,8 @@ const ContainerInput = styled.div`
   input {
     font-size: 19px;
     color: #515151;
-    width: 563px;
-    height: 45px;
+    width: 564px;
+    height: 46px;
     padding-left: 15px;
     border: none;
     border-radius: 8px;
@@ -91,6 +94,9 @@ const ContainerInput = styled.div`
     &::placeholder {
       font-size: 19px;
       color: #c6c6c6;
+    }
+    @media (max-width: 1000px) {
+    width: 90vw;
     }
   }
   svg {
