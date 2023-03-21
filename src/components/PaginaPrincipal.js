@@ -10,36 +10,40 @@ export default function PaginaPrincipal() {
     const [password, setPassword] = useState("");
     const [disable, setDisable] = useState(false);
     const navigate = useNavigate();
-    const { setToken } = useContext(AuthContext);
+    const { setUserData } = useContext(AuthContext);
 
     function home(){
-        navigate("/home")
+        navigate("/timeline")
     }
 
     function loginConta(event){
         event.preventDefault()
+        setDisable(true);
 
         if (email === '' || password === '') {
-            alert('Por favor, preencha todos os campos obrigatórios.')
+            alert('Please fill in all required fields.')
             setDisable(false)
             return false;
         }
 
         axios
-            .post(`${process.env.REACT_APP_API_URL}/auth/login`, {
+            .post(`${process.env.REACT_APP_API_URL}/signin`, {
                 email: email,
                 password: password
             } )
             .then((response) => {
-                setToken(response.data.access_token)
-                localStorage.setItem('access_token', response.data.access_token);
-                setDisable(true);
+                const userData = response.data;
+                setUserData(userData)
+                localStorage.setItem('access_token', userData.token);
+                setDisable(false);
                 home()
             } )
             .catch((error) => {
                 console.log(error)
                 if (error.response.status === 401) {
-                    alert('E-mail ou senha incorretos')
+                    alert('E-mail or password incorrect')
+                } else {
+                    alert('Anything has been wrong. Try again later or contact the support.')
                 }
                 setDisable(false)
             })

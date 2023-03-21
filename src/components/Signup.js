@@ -18,11 +18,12 @@ export default function Signup() {
 
         if (email === '' || password === '' || username === '' || picture_url  === '') {
             alert('Please, fill in all required fields.')
+            setDisable(false)
             return false;
         }
 
         axios
-            .post(`${process.env.REACT_APP_API_URL}/sign-up`, {
+            .post(`${process.env.REACT_APP_API_URL}/signup`, {
                 email: email,
                 username: username,
                 password: password,
@@ -38,9 +39,8 @@ export default function Signup() {
                 setDisable(false)
                 if (error.response.status === 409) {
                     alert('Email is already registered!')
-                }
-                if (error.response.status === 400) {
-                    alert('Make sure your password is at least 6 characters long.')
+                } else {
+                    alert('Anything has been wrong. Try again later or contact the support.')
                 }
 
             })
