@@ -2,12 +2,15 @@ import SearchBar from "./SearchBar";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom'
+import AuthContext from "../contexts/AuthContext";
 
 export default function Header() {
     const [showLogout, setShowLogout] = useState(false);
     const navigate = useNavigate();
+    const userDataString = localStorage.getItem('userData');
+    const userData = JSON.parse(userDataString);
 
     return (
         <ContainerHeader>
@@ -21,7 +24,7 @@ export default function Header() {
                     <IoIosArrowUp onClick={() => (setShowLogout(false))} /> :
                     <IoIosArrowDown onClick={() => (setShowLogout(true))} />
                 }
-                <img src="https://images2.alphacoders.com/495/495160.png" />
+                <img src={userData.picture_url} />
                 <LogOutBar data-test="menu" showLogout={showLogout}>
                     <p data-test="logout" onClick={() => {
                         localStorage.clear()

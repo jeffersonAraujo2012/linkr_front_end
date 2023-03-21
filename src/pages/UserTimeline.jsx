@@ -6,6 +6,7 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import Post from "../components/Post";
 import Trending from "../components/Trending";
+import AuthContext from "../contexts/AuthContext";
 import UpdateUserPage from "../contexts/UpdateUserPage";
 
 export default function UserTimeline() {
@@ -14,10 +15,17 @@ export default function UserTimeline() {
   const [updateUserPage, setUpdateUserPage] = useContext(UpdateUserPage);
   let userPicture = "";
   let userName = "";
+  const { userData, setUserData } = useContext(AuthContext);
+
+  const config = {
+    headers: {
+      "Authorization": `Bearer ${userData.token}`
+    }
+  }
 
   useEffect(() => {
     const resultPosts = axios.get(
-      `${process.env.REACT_APP_API_URL}/user/${id}`
+      `${process.env.REACT_APP_API_URL}/user/${id}`, config
     );
     resultPosts.then((res) => setPosts(res.data));
     resultPosts.catch((err) => {
@@ -52,7 +60,7 @@ export default function UserTimeline() {
 
   return (
     <TimelineStyle>
-      <Header/>
+      <Header />
       <div className="flex-column">
         <TitleStyle>
           <img src={posts[0].picture_user} />
