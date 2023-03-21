@@ -10,37 +10,42 @@ export default function PaginaPrincipal() {
     const [password, setPassword] = useState("");
     const [disable, setDisable] = useState(false);
     const navigate = useNavigate();
-    const { setToken } = useContext(AuthContext);
+    const { setUserData } = useContext(AuthContext);
 
     function home(){
-        navigate("/home")
+        navigate("/timeline")
     }
 
     function loginConta(event){
         event.preventDefault()
+        setDisable(true);
 
         if (email === '' || password === '') {
-            alert('Please, fill in all required fields.')
+            alert('Please fill in all required fields.')
             setDisable(false)
             return false;
         }
 
-
         axios
-            .post(`${process.env.REACT_APP_API_URL}/sign-in`, {
+            .post(`${process.env.REACT_APP_API_URL}/signin`, {
                 email: email,
                 password: password
             } )
-            .then((request) => {
-                setToken(request.data.token)
-                localStorage.setItem('token', request.data.token);
-                setDisable(true);
+            .then((response) => {
+                const userData = response.data;
+                console.log(userData)
+                setUserData(userData)
+                const userDataString = JSON.stringify(userData);
+                localStorage.setItem('userData', userDataString);
+                setDisable(false);
                 home()
             } )
             .catch((error) => {
                 console.log(error)
                 if (error.response.status === 401) {
-                    alert('Incorrect email or password')
+                    alert('E-mail or password incorrect')
+                } else {
+                    alert('Anything has been wrong. Try again later or contact the support.')
                 }
                 setDisable(false)
             })
@@ -54,12 +59,12 @@ export default function PaginaPrincipal() {
                 <p>the best links on the web</p>
             </Logo>
             <SignIn>
-                    <form onSubmit={loginConta}>
-                        <input data-test="email" disabled={disable} onChange={(e) => setEmail(e.target.value)} value={email} type='email' placeholder="e-mail" name="email"></input>
-                        <input data-test="password" disabled={disable} onChange={(e) => setPassword(e.target.value)} value={password} type='password' placeholder="password" name="password"></input>
-                        <button data-test="login-btn" disabled={disable} type="submit">Log in</button>
-                    </form>
-                <Link to={"/signup"}  data-test="sign-up-link" ><p>First time? Create an account!</p></Link>
+                <form onSubmit={loginConta}>
+                    <input data-testid="email" disabled={disable} onChange={(e) => setEmail(e.target.value)} value={email} type='email' placeholder="e-mail" name="email"></input>
+                    <input data-testid="password" disabled={disable} onChange={(e) => setPassword(e.target.value)} value={password} type='password' placeholder="password" name="password"></input>
+                    <button data-testid="login-btn" disabled={disable} type="submit">Entrar</button>
+                </form>
+                <Link to={"/signup"}  data-testid="sign-up-link" ><p>Primeira vez? Crie uma conta!</p></Link>
             </SignIn>
         </PrincipalStyled>
     )
@@ -70,7 +75,7 @@ const PrincipalStyled = styled.div`
     height: 100vh;
 
     display: flex;
-    align-itens:center;
+    align-items:center;
 `
 const Logo = styled.div`
     display: flex;

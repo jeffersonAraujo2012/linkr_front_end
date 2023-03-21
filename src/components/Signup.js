@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import styled from "styled-components"
+import styled from "styled-components";
 
 
 export default function Signup() {
     const [email, setEmail] = useState("");
-    const [name, setName] = useState("");
+    const [username, setUsername ] = useState("");
     const [password, setPassword] = useState("");
-    const [pictureUrl, setpictureUrl] = useState("");
+    const [picture_url, setPicture_url ] = useState("");
     const [disable, setDisable] = useState(false);
     const navigate = useNavigate();
 
@@ -16,17 +16,18 @@ export default function Signup() {
         event.preventDefault();
         setDisable(true)
 
-        if (email === '' || password === '' || name === '' || pictureUrl === '') {
+        if (email === '' || password === '' || username === '' || picture_url  === '') {
             alert('Please, fill in all required fields.')
+            setDisable(false)
             return false;
         }
 
         axios
-            .post(`${process.env.REACT_APP_API_URL}/sign-up`, {
+            .post(`${process.env.REACT_APP_API_URL}/signup`, {
                 email: email,
-                name: name,
+                username: username,
                 password: password,
-                pictureUrl: pictureUrl
+                picture_url : picture_url 
             } )
             .then((request) => {
                 console.log(request.data)
@@ -38,9 +39,8 @@ export default function Signup() {
                 setDisable(false)
                 if (error.response.status === 409) {
                     alert('Email is already registered!')
-                }
-                if (error.response.status === 400) {
-                    alert('Make sure your password is at least 6 characters long.')
+                } else {
+                    alert('Anything has been wrong. Try again later or contact the support.')
                 }
 
             })
@@ -60,10 +60,10 @@ export default function Signup() {
             </Logo>
             <SignUp>
                 <form onSubmit={dadosConta}>  
-                    <input data-test="email" disabled={disable} onChange={(e) => setEmail(e.target.value)} value={email} type='email' placeholder="e-mail" name="email"></input>
-                    <input data-test="password" disabled={disable} onChange={(e) => setPassword(e.target.value)} value={password} type='password' placeholder="password" name="password"></input>
-                    <input data-test="username" disabled={disable} onChange={(e) => setName(e.target.value)} value={name} type='text' placeholder="username" name="username"></input>
-                    <input data-test="picture-url" disabled={disable} onChange={(e) => setpictureUrl(e.target.value)} value={pictureUrl} type='text' placeholder="image" name="image"></input>
+                    <input data-test="email" disabled={disable} onChange={(e) => setEmail(e.target.value)} value={email} type='email' placeholder="e-mail" name="email" autoComplete="off" />
+                    <input data-test="password" disabled={disable} onChange={(e) => setPassword(e.target.value)} value={password} type='password' placeholder="password" name="password" autoComplete="off" />
+                    <input data-test="username" disabled={disable} onChange={(e) => setUsername(e.target.value)} value={username} type='text' placeholder="username" name="username" autoComplete="off" />
+                    <input data-test="picture-url" disabled={disable} onChange={(e) => setPicture_url(e.target.value)} value={picture_url } type='text' placeholder="image" name="image" autoComplete="off" />
                     <button data-test="sign-up-btn" disabled={disable} type="submit">Sign Up</button>
                 </form>
                 <Link to={"/"} data-test="login-link"><p>Switch back to log in!</p></Link>
@@ -71,6 +71,7 @@ export default function Signup() {
         </PrincipalStyled>
     )
 }
+
 
 const PrincipalStyled = styled.div`
     width: 100%;

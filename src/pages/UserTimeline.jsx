@@ -3,9 +3,10 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import styled from "styled-components";
+import Header from "../components/Header";
 import Post from "../components/Post";
-import SearchBar from "../components/SearchBar";
 import Trending from "../components/Trending";
+import AuthContext from "../contexts/AuthContext";
 import UpdateUserPage from "../contexts/UpdateUserPage";
 
 export default function UserTimeline() {
@@ -14,10 +15,17 @@ export default function UserTimeline() {
   const [updateUserPage, setUpdateUserPage] = useContext(UpdateUserPage);
   let userPicture = "";
   let userName = "";
+  const { userData, setUserData } = useContext(AuthContext);
+
+  const config = {
+    headers: {
+      "Authorization": `Bearer ${userData.token}`
+    }
+  }
 
   useEffect(() => {
     const resultPosts = axios.get(
-      `${process.env.REACT_APP_API_URL}/user/${id}`
+      `${process.env.REACT_APP_API_URL}/user/${id}`, config
     );
     resultPosts.then((res) => setPosts(res.data));
     resultPosts.catch((err) => {
@@ -43,7 +51,7 @@ export default function UserTimeline() {
       userPicture = posts[0].picture_user;
       userName = posts[0].username;
       return posts.map((post) => {
-        return <Post key={post.id} data={post} />;
+        return <Post key={post.id} data={post} updatePost={[updateUserPage, setUpdateUserPage]} />;
       });
     }
   }
@@ -52,7 +60,7 @@ export default function UserTimeline() {
 
   return (
     <TimelineStyle>
-      <SearchBar />
+      <Header />
       <div className="flex-column">
         <TitleStyle>
           <img src={posts[0].picture_user} />
@@ -74,9 +82,11 @@ const TimelineStyle = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
   min-height: 100vh;
-  padding-top: 78px;
+  margin-top: 100px;
+  @media (max-width: 1000px) {
+    margin-top: 135px;
+  }
 
   .flex-column {
     display: flex;
@@ -86,12 +96,23 @@ const TimelineStyle = styled.div`
     h1 {
       margin-bottom: 44px;
     }
+
+    @media (max-width: 1000px) {
+      width: 100%;
+    }
   }
 
   .flex-row {
     width: fit-content;
     display: flex;
     justify-content: center;
+
+    @media (max-width: 1000px) {
+      &,
+      & main {
+        width: 100%;
+      }
+    }
   }
 
   .no-posts {
@@ -121,13 +142,17 @@ const TimelineStyle = styled.div`
 
   aside {
     margin-left: 24px;
+
+    @media (max-width: 1000px) {
+      display: none;
+    }
   }
 `;
 
 const TitleStyle = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 48px;
+  margin-bottom: 40px;
   p {
     font-family: "Oswald", sans-serif;
     font-size: 43px;
@@ -141,5 +166,9 @@ const TitleStyle = styled.div`
     width: 50px;
     height: 50px;
     border-radius: 50px;
+  }
+
+  @media (max-width: 1000px) {
+    margin-left: 16px;
   }
 `;

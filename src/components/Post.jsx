@@ -64,7 +64,8 @@ export default function Post({ data, updatePost }) {
   }
 
   return (
-    <PostStyle>
+
+    <PostStyle data-test="post">
       <div className="container">
         <div className="post_owner_image">
           <img src={data.picture_user} alt={data.username} />
@@ -85,9 +86,9 @@ export default function Post({ data, updatePost }) {
 
       <div className="post_content">
         <div>
-          <Link to={`/usertimeline/${data.user_id}`}>
-            {data.username}
-          </Link>
+          <Link to={`/usertimeline/${data.user_id}`} data-test="username">
+          {data.username}
+        </Link>
           <div className="edit_and_delete">
             <img src={edit} onClick={() => {
               setVisivel(false)
@@ -135,7 +136,6 @@ export default function Post({ data, updatePost }) {
                   }}
                   required
                 />
-
               )
             }
               
@@ -192,12 +192,15 @@ const PostStyle = styled.div`
     }
   }
   .post_content {
+    width: 100%;
+
     & > div > a:first-child {
       font-size: 19px;
       line-height: 23px;
       color: white;
       text-decoration: none;
     }
+
     .post_description {
       font-size: 17px;
       line-height: 21px;
@@ -271,6 +274,25 @@ const PostStyle = styled.div`
     // input {
     //   display: ${props => props.visivel === false? 'initial' : 'none'};
     // }
+  }
+
+  @media (max-width: 1000px) {
+    width: 100%;
+    border-radius: 0;
+
+    .post_content {
+      width: 100%;
+
+      & > a:first-child {
+        font-size: 17px;
+        line-height: 20px;
+      }
+
+      .post_description {
+        font-size: 15px;
+        line-height: 18px;
+      }
+    }
   }
 `;
 
