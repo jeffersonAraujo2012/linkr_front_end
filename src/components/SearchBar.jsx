@@ -4,13 +4,16 @@ import React from "react";
 import { DebounceInput } from "react-debounce-input";
 import styled from "styled-components";
 import { AiOutlineSearch } from "react-icons/ai";
+import { RxDotFilled } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 import UpdateUserPage from "../contexts/UpdateUserPage";
+import FollowersContext from "../contexts/FollowersContext";
 
 export default function SearchBar() {
   const [search, setSearch] = useState("");
   const [result, setResult] = useState(undefined);
   const navigate = useNavigate();
+  const [followers] = useContext(FollowersContext);
   const [updateUserPage, setUpdateUserPage] = useContext(UpdateUserPage);
 
   function searchUser(event) {
@@ -31,34 +34,41 @@ export default function SearchBar() {
   }
 
   return (
-      <ContainerSearchBar>
-        <ContainerInput>
-          <DebounceInput
-            minLength={3}
-            debounceTimeout={300}
-            id="test"
-            type="text"
-            placeholder="Search for people"
-            value={search}
-            onChange={searchUser}
-            required
-            data-test="search"
-          />
-          <AiOutlineSearch onClick={() => handleClick(result[0].id)}/>
-          {result?.length !== 0 ? (
-            result?.map(
-              (r) => (
-                <EachUser key={r.id} onClick={() => handleClick(r.id)} data-test="user-search">
-                  <img src={r.picture_url} />
-                  <p>{r.username}</p>
-                </EachUser>
-              )
+    <ContainerSearchBar>
+      <ContainerInput>
+        <DebounceInput
+          minLength={3}
+          debounceTimeout={300}
+          id="test"
+          type="text"
+          placeholder="Search for people"
+          value={search}
+          onChange={searchUser}
+          required
+          data-test="search"
+        />
+        <AiOutlineSearch onClick={() => handleClick(result[0].id)} />
+        {result?.length !== 0 ? (
+          result?.map(
+            (r) => (
+              <EachUser key={r.id} onClick={() => handleClick(r.id)} data-test="user-search">
+                <img src={r.picture_url} />
+                <p>{r.username}</p>
+                {followers.map((f) => {
+                  if (f.followed_id === r.id) return (
+                    <>
+                      <RxDotFilled key={f.followed_id} />
+                      <span>following</span>
+                    </>)
+                })}
+              </EachUser>
             )
-          ) : (
-            <></>
-          )}
-        </ContainerInput>
-      </ContainerSearchBar>
+          )
+        ) : (
+          <></>
+        )}
+      </ContainerInput>
+    </ContainerSearchBar>
   );
 }
 
@@ -72,6 +82,7 @@ const ContainerSearchBar = styled.div`
     top: 120%;
     margin-top: 0;
     margin-left: -45vw;
+    z-index: 2;
   }
 `;
 
@@ -126,5 +137,14 @@ const EachUser = styled.button`
   p {
     font-size: 19px;
     color: #515151;
+  }
+  svg {
+    position: static;
+    font-size: 20px;
+    color: #C5C5C5;
+  }
+  span{ 
+    font-size: 19px;
+    color: #C5C5C5;
   }
 `;

@@ -10,11 +10,13 @@ import SearchBar from "../components/SearchBar";
 import SendPostForm from "../components/SendPostForm";
 import Trending from "../components/Trending";
 import AuthContext from "../contexts/AuthContext";
+import FollowersContext from "../contexts/FollowersContext";
 
 export default function Timeline() {
   const [posts, setPosts] = useState([]);
   const [update, setUpdate] = useState(false);
   const { userData, setUserData } = useContext(AuthContext);
+  const [followers, setFollowers] = useContext(FollowersContext);
   const navigate = useNavigate();
 
   console.log(userData);
@@ -56,6 +58,13 @@ export default function Timeline() {
         "An error occured while trying to fetch the posts, please refresh the page"
       );
     });
+
+    if (userData === undefined) return;
+    axios.get(`${process.env.REACT_APP_API_URL}/follows/${userData.id}`
+    ).then((res) => {
+      setFollowers(res.data);
+    }).catch((err) => alert(err.response.data));  
+
   }, [update, userData]);
 
   if (!userData) {
