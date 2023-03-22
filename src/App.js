@@ -8,25 +8,29 @@ import Hashtag from "./pages/Hashtag";
 import UpdateHashtagContext from "./contexts/UpdataHashtagContext";
 import UserTimeline from "./pages/UserTimeline";
 import UpdateUserPage from "./contexts/UpdateUserPage";
+import FollowersContext from "./contexts/FollowersContext";
 
 export default function App() {
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState();
   const [updataHashtags, setUpdataHashtags] = useState(false);
   const [updateUserPage, setUpdateUserPage] = useState(false);
+  const [followers, setFollowers] = useState([]);
   return (
     <UpdateUserPage.Provider value={[updateUserPage, setUpdateUserPage]}>
       <UpdateHashtagContext.Provider value={[updataHashtags, setUpdataHashtags]}>
-      <AuthContext.Provider value={{ userData, setUserData }}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<PaginaPrincipal />} />
-            <Route path="/sign-up" element={<Signup />} />
-            <Route path="/timeline" element={Timeline()} />
-            <Route path="hashtag/:hashtag" element={<Hashtag />} />
-            <Route path="/usertimeline/:id" element={<UserTimeline />} />
-          </Routes>
-        </BrowserRouter>
-      </AuthContext.Provider>
+        <AuthContext.Provider value={{ userData, setUserData }}>
+          <FollowersContext.Provider value={[followers, setFollowers]}>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<PaginaPrincipal />} />
+                <Route path="/sign-up" element={<Signup />} />
+                <Route path="/timeline" element={<Timeline />} />
+                <Route path="hashtag/:hashtag" element={<Hashtag />} />
+                <Route path="/usertimeline/:id" element={<UserTimeline />} />
+              </Routes>
+            </BrowserRouter>
+          </FollowersContext.Provider>
+        </AuthContext.Provider>
       </UpdateHashtagContext.Provider>
     </UpdateUserPage.Provider>
   );

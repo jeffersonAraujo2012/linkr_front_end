@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useContext, useState } from "react";
 import styled from "styled-components";
+import AuthContext from "../contexts/AuthContext";
 import UpdateHashtagContext from "../contexts/UpdataHashtagContext";
 
 export default function SendPostForm({ updatePost }) {
@@ -9,7 +10,9 @@ export default function SendPostForm({ updatePost }) {
   const [publishing, setPublishing] = useState(false);
   const [update, setUpdate] = updatePost;
   const [updataHashtags, setUpdataHashtags] = useContext(UpdateHashtagContext);
+  const {userData} = useContext(AuthContext)
 
+  console.log(userData);
   const mockUser = {
     username: "Jeff Araujo",
     picture_user:
@@ -23,7 +26,7 @@ export default function SendPostForm({ updatePost }) {
     const sendPromise = axios.post(process.env.REACT_APP_API_URL + "/posts", {
       url: url,
       description: description,
-      user_id: prompt("Mock -- Qual id do usuário?"),
+      user_id: userData.id,
     });
 
     sendPromise.then((res) => {
@@ -42,7 +45,7 @@ export default function SendPostForm({ updatePost }) {
   return (
     <SendPostFormStyle data-test="publish-box">
       <div className="post_owner_image">
-        <img src={mockUser.picture_user} alt={mockUser.username} />
+        <img src={userData.picture_url} alt={userData.username} />
       </div>
 
       <form className="post_content" onSubmit={sendPost}>
