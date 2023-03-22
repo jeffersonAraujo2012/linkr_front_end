@@ -10,7 +10,7 @@ export default function Header() {
     const [showLogout, setShowLogout] = useState(false);
     const navigate = useNavigate();
     const userDataString = localStorage.getItem('userData');
-    const userData = JSON.parse(userDataString);
+    const {userData} = useContext(AuthContext);
 
     return (
         <ContainerHeader>

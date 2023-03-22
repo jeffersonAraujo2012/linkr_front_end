@@ -1,5 +1,6 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import styled from "styled-components";
 import Header from "../components/Header";
@@ -8,12 +9,46 @@ import Post from "../components/Post";
 import SearchBar from "../components/SearchBar";
 import SendPostForm from "../components/SendPostForm";
 import Trending from "../components/Trending";
+import AuthContext from "../contexts/AuthContext";
 
 export default function Timeline() {
   const [posts, setPosts] = useState([]);
   const [update, setUpdate] = useState(false);
+  const { userData, setUserData } = useContext(AuthContext);
+  const navigate = useNavigate();
 
+  console.log(userData);
   useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    function isNotLogged() {
+      alert("You should be logged!");
+      navigate("/");
+    }
+
+    if (!token) {
+      isNotLogged();
+    } else {
+      const configHeaders = {
+        headers: {
+          authorization: "Bearer " + token,
+        },
+      };
+
+      const resultMe = axios.get(
+        process.env.REACT_APP_API_URL + "/users/me",
+        configHeaders
+      );
+      resultMe.then((res) => {
+        if (JSON.stringify(userData) !== JSON.stringify(res.data)) {
+          setUserData(res.data);
+        }
+      });
+      resultMe.catch((_) => {
+        localStorage.removeItem("access_token");
+        isNotLogged();
+      });
+    }
+
     const resultPosts = axios.get(process.env.REACT_APP_API_URL + "/posts");
     resultPosts.then((res) => setPosts(res.data));
     resultPosts.catch((res) => {
@@ -21,7 +56,11 @@ export default function Timeline() {
         "An error occured while trying to fetch the posts, please refresh the page"
       );
     });
-  }, [update]);
+  }, [update, userData]);
+
+  if (!userData) {
+    return "Loading";
+  }
 
   function showPosts() {
     if (!posts) {
@@ -39,14 +78,18 @@ export default function Timeline() {
 
     if (posts) {
       return posts.map((post) => {
-        return <Post key={post.id} data={post} updatePost={[update, setUpdate]} />;
+        return (
+          <Post key={post.id} data={post} updatePost={[update, setUpdate]} />
+        );
       });
     }
   }
 
+  console.log(userData);
   return (
     <TimelineStyle>
-      <Header/>
+      <Header />
+
       <div className="flex-column">
         <PageTitle title="timeline" />
 
@@ -72,7 +115,7 @@ const TimelineStyle = styled.div`
   align-items: center;
 
   min-height: 100vh;
-  padding-top: 78px;
+  padding-top: 132px;
   @media (max-width: 1000px) {
     margin-top: 50px;
   }
