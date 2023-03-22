@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PulseLoader } from "react-spinners";
 import styled from "styled-components";
 import Header from "../components/Header";
@@ -16,22 +16,50 @@ export default function UserTimeline() {
   let userPicture = "";
   let userName = "";
   const { userData, setUserData } = useContext(AuthContext);
-
-  const config = {
-    headers: {
-      "Authorization": `Bearer ${userData.token}`
-    }
-  }
+  const navigate = useNavigate();
 
   useEffect(() => {
+    let configHeaders;
+
+    const token = localStorage.getItem("access_token");
+    function isNotLogged() {
+      alert("You should be logged!");
+      navigate("/");
+    }
+
+    if (!token) {
+      isNotLogged();
+    } else {
+      configHeaders = {
+        headers: {
+          authorization: "Bearer " + token,
+        },
+      };
+
+      const resultMe = axios.get(
+        process.env.REACT_APP_API_URL + "/users/me",
+        configHeaders
+      );
+      resultMe.then((res) => {
+        if (JSON.stringify(userData) !== JSON.stringify(res.data)) {
+          setUserData(res.data);
+        }
+      });
+      resultMe.catch((_) => {
+        localStorage.removeItem("access_token");
+        isNotLogged();
+      });
+    }
+
     const resultPosts = axios.get(
-      `${process.env.REACT_APP_API_URL}/user/${id}`, config
+      `${process.env.REACT_APP_API_URL}/user/${id}`,
+      configHeaders
     );
     resultPosts.then((res) => setPosts(res.data));
     resultPosts.catch((err) => {
       alert(err.response.data);
     });
-  }, [updateUserPage]);
+  }, [updateUserPage, userData]);
 
   function showPosts() {
     if (!posts) {
@@ -51,7 +79,13 @@ export default function UserTimeline() {
       userPicture = posts[0].picture_user;
       userName = posts[0].username;
       return posts.map((post) => {
-        return <Post key={post.id} data={post} updatePost={[updateUserPage, setUpdateUserPage]} />;
+        return (
+          <Post
+            key={post.id}
+            data={post}
+            updatePost={[updateUserPage, setUpdateUserPage]}
+          />
+        );
       });
     }
   }
@@ -83,7 +117,8 @@ const TimelineStyle = styled.div`
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  margin-top: 100px;
+  padding-top: 132px;
+
   @media (max-width: 1000px) {
     margin-top: 135px;
   }

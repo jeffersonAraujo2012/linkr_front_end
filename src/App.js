@@ -10,7 +10,7 @@ import UserTimeline from "./pages/UserTimeline";
 import UpdateUserPage from "./contexts/UpdateUserPage";
 
 export default function App() {
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState();
   const [updataHashtags, setUpdataHashtags] = useState(false);
   const [updateUserPage, setUpdateUserPage] = useState(false);
   return (
@@ -21,7 +21,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<PaginaPrincipal />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/timeline" element={Timeline()} />
+            <Route path="/timeline" element={<Timeline />} />
             <Route path="hashtag/:hashtag" element={<Hashtag />} />
             <Route path="/usertimeline/:id" element={<UserTimeline />} />
           </Routes>

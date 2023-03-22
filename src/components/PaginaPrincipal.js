@@ -33,10 +33,8 @@ export default function PaginaPrincipal() {
             } )
             .then((response) => {
                 const userData = response.data;
-                console.log(userData)
                 setUserData(userData)
-                const userDataString = JSON.stringify(userData);
-                localStorage.setItem('userData', userDataString);
+                localStorage.setItem('access_token', userData.token);
                 setDisable(false);
                 home()
             } )
