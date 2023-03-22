@@ -23,7 +23,7 @@ export default function App() {
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<PaginaPrincipal />} />
-                <Route path="/signup" element={<Signup />} />
+                <Route path="/sign-up" element={<Signup />} />
                 <Route path="/timeline" element={<Timeline />} />
                 <Route path="hashtag/:hashtag" element={<Hashtag />} />
                 <Route path="/usertimeline/:id" element={<UserTimeline />} />

@@ -58,11 +58,11 @@ export default function PaginaPrincipal() {
             </Logo>
             <SignIn>
                 <form onSubmit={loginConta}>
-                    <input data-testid="email" disabled={disable} onChange={(e) => setEmail(e.target.value)} value={email} type='email' placeholder="e-mail" name="email"></input>
-                    <input data-testid="password" disabled={disable} onChange={(e) => setPassword(e.target.value)} value={password} type='password' placeholder="password" name="password"></input>
-                    <button data-testid="login-btn" disabled={disable} type="submit">Entrar</button>
+                    <input data-test="email" disabled={disable} onChange={(e) => setEmail(e.target.value)} value={email} type='email' placeholder="e-mail" name="email"></input>
+                    <input data-test="password" disabled={disable} onChange={(e) => setPassword(e.target.value)} value={password} type='password' placeholder="password" name="password"></input>
+                    <button data-test="login-btn" disabled={disable} type="submit">Entrar</button>
                 </form>
-                <Link to={"/signup"}  data-testid="sign-up-link" ><p>Primeira vez? Crie uma conta!</p></Link>
+                <Link to={"/signup"}  data-test="sign-up-link" ><p>Primeira vez? Crie uma conta!</p></Link>
             </SignIn>
         </PrincipalStyled>
     )
