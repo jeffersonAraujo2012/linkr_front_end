@@ -9,7 +9,6 @@ import AuthContext from "../contexts/AuthContext";
 export default function Header() {
     const [showLogout, setShowLogout] = useState(false);
     const navigate = useNavigate();
-    const userDataString = localStorage.getItem('userData');
     const {userData} = useContext(AuthContext);
 
     return (
@@ -50,6 +49,7 @@ const ContainerHeader = styled.div`
     width: 100%;
     background-color: #151515;
     height: 72px;
+    z-index: 3;
     h1{
         color: #FFFFFF;
         font-size: 48px;
