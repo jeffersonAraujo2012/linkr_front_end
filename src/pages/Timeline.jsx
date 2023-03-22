@@ -94,7 +94,6 @@ export default function Timeline() {
     }
   }
 
-  console.log(userData);
   return (
     <TimelineStyle>
       <Header />
