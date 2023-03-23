@@ -19,11 +19,17 @@ export default function Header() {
             <SearchBar />
 
             <ContainerLogout>
-                {showLogout ?
-                    <IoIosArrowUp onClick={() => (setShowLogout(false))} /> :
-                    <IoIosArrowDown onClick={() => (setShowLogout(true))} />
-                }
-                <img src={userData.picture_url} />
+                <div className="wrapper" onClick={() => {
+                    if (showLogout) setShowLogout(false);
+                    else setShowLogout(true);
+                }}>
+                    {showLogout ?
+                        <IoIosArrowUp /> :
+                        <IoIosArrowDown />
+                    }
+                    <img src={userData.picture_url} data-test="avatar" />
+                </div>
+                
                 <LogOutBar data-test="menu" showLogout={showLogout}>
                     <p data-test="logout" onClick={() => {
                         localStorage.clear()
@@ -71,6 +77,11 @@ const ContainerLogout = styled.div`
         width: 49px;
         height: 49px;
         border-radius: 50px;
+    }
+    & > .wrapper {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
     }
 `
 
