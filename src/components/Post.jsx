@@ -15,8 +15,8 @@ export default function Post({ data, updatePost }) {
   const [update, setUpdate] = updatePost;
   const [description, setDescription] = useState(data.description);
   const [visivel, setVisivel] = useState(true);
-  const [like, setLike] = useState(false);
-  const [quantLike, setQuantLike] = useState(null);
+  const [like, setLike] = useState(data.liked_by.find((i) => i=data.id))
+  const [quantLike, setQuantLike] = useState(data.likes_count)
   const inputRef = useRef(null);
 
   function openModal() {
@@ -197,8 +197,9 @@ const PostStyle = styled.div`
         font-family: Lato;
         font-size: 11px;
         font-weight: 400;
-        text-align: center;
-        color: #ffffff;
+        // text-align: center;
+        margin-left: 12px;
+        color: #FFFFFF;
       }
     }
   }
