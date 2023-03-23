@@ -90,7 +90,7 @@ export default function Post({ data, updatePost }) {
 
       <div className="post_content">
         <div>
-          <Link to={`/usertimeline/${data.user_id}`} data-test="username">
+          <Link to={`/user/${data.user_id}`} data-test="username">
           {data.username}
         </Link>
           <div className="edit_and_delete">
