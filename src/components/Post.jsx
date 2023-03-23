@@ -117,6 +117,7 @@ export default function Post({ data, updatePost }) {
                   setModal(false);
                   deletePost();
                 }}
+                data-test="delete-btn"
               >
                 Yes, delete it
               </button>
