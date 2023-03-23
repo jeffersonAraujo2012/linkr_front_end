@@ -8,7 +8,6 @@ import buttonLike from "../assets/like.png"
 import buttonLike2 from "../assets/like2.png"
 import { useRef, useState } from "react";
 import axios from "axios";
-// import Timeline from "../pages/Timeline";
 
 export default function Post({ data, updatePost }) {
   const navigate = useNavigate();
@@ -25,11 +24,13 @@ export default function Post({ data, updatePost }) {
   }
 
   function likePost() {
+    console.log(data)
     axios.post(process.env.REACT_APP_API_URL + "/posts/like", { data })
     .then((res) => {
         setLike(!like)
         setUpdate(!update);
-        setQuantLike(res.data)
+        setQuantLike(res.data.count)
+        console.log(res.data.count)
       })
     .catch((err) => console.log(err.response.data))
   }
@@ -52,9 +53,8 @@ export default function Post({ data, updatePost }) {
   
     if (e.keyCode === 13) {
       const edit = { id: data.id, description, user_id: data.user_id }
-      console.log(edit)
   
-      axios.patch(process.env.REACT_APP_API_URL + "/posts", { data: { edit } })
+      axios.patch(process.env.REACT_APP_API_URL + "/posts", edit)
         .then(() => {
           alert('post editado com sucesso!')
           setUpdate(!update);
@@ -78,7 +78,11 @@ export default function Post({ data, updatePost }) {
                 <figcaption>{quantLike} likes</figcaption>
               </figure>
             ) : (
-              <img src={buttonLike2} onClick={likePost} />
+              <figure>
+                <img src={buttonLike2} onClick={likePost} />
+                <figcaption>{quantLike} likes</figcaption>
+              </figure>
+
             )
         }
 
@@ -93,6 +97,7 @@ export default function Post({ data, updatePost }) {
             <img src={edit} onClick={() => {
               setVisivel(false)
               console.log(visivel)
+              inputRef.current.focus()
             }}/>
             <img src={trash} onClick={openModal} />
           </div>
@@ -132,6 +137,7 @@ export default function Post({ data, updatePost }) {
                   onKeyDown={editPost}
                   onBlur={() => {
                     setVisivel(true)
+                    console.log(visivel)
                     setDescription(data.description)
                   }}
                   required
@@ -166,18 +172,23 @@ const PostStyle = styled.div`
     display: flex;
     flex-direction: column;
     gap: 19px;
-    
-    img {
-      height: 18px;
-      width: 20px;
-    }
 
-    figcaption {
-      font-family: Lato;
-      font-size: 11px;
-      font-weight: 400;
-      text-align: center;
-      color: #FFFFFF;
+    figure {
+      
+      img {
+        height: 18px;
+        width: 20px;
+        margin-left: 15px;
+        margin-bottom: 4px;
+      }
+  
+      figcaption {
+        font-family: Lato;
+        font-size: 11px;
+        font-weight: 400;
+        text-align: center;
+        color: #FFFFFF;
+      }
     }
   }
 
