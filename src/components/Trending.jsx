@@ -26,7 +26,7 @@ export default function Trending() {
           <Link
             key={hashtag.name}
             to={`/hashtag/${hashtag.name}`}
-            data-test="trending"
+            data-test="hashtag"
           >
             {"# " + hashtag.name}
           </Link>
