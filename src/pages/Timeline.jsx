@@ -59,11 +59,12 @@ export default function Timeline() {
       );
     });
 
-    if (userData === undefined) return;
+    /*if (userData === undefined) return;
     axios.get(`${process.env.REACT_APP_API_URL}/follows/${userData.id}`
     ).then((res) => {
       setFollowers(res.data);
-    }).catch((err) => alert(err.response.data));  
+    }).catch((err) => alert(err.response.data));
+    */
 
   }, [update, userData]);
 
