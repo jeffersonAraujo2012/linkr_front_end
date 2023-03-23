@@ -8,6 +8,7 @@ import { RxDotFilled } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 import UpdateUserPage from "../contexts/UpdateUserPage";
 import FollowersContext from "../contexts/FollowersContext";
+import AuthContext from "../contexts/AuthContext";
 
 export default function SearchBar() {
   const [search, setSearch] = useState("");
@@ -15,12 +16,13 @@ export default function SearchBar() {
   const navigate = useNavigate();
   const [followers] = useContext(FollowersContext);
   const [updateUserPage, setUpdateUserPage] = useContext(UpdateUserPage);
+  const { userData } = useContext(AuthContext);
 
   function searchUser(event) {
     const searchTerm = event.target.value;
     if (searchTerm.length < 3) return setResult(undefined);
     const resultSearch = axios.get(
-      `${process.env.REACT_APP_API_URL}/users/${searchTerm}`
+      `${process.env.REACT_APP_API_URL}/users/${userData.id}/${searchTerm}`
     );
     resultSearch.then((res) => setResult(res.data));
     resultSearch.catch((err) => {

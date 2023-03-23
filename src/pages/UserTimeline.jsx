@@ -23,6 +23,7 @@ export default function UserTimeline() {
   let userName = "";
   let configHeaders;
 
+  console.log(userData);
   useEffect(() => {
 
     const token = localStorage.getItem("access_token");
