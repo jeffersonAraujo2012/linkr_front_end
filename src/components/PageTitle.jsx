@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-export default function PageTitle({title}) {
-  return <TitleStyle>{title}</TitleStyle>
+export default function PageTitle({title, dataTest}) {
+  return <TitleStyle data-test={dataTest}>{title}</TitleStyle>
 }
 
 const TitleStyle = styled.h1`

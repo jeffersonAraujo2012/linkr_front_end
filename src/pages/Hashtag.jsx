@@ -90,7 +90,7 @@ export default function Hashtag() {
     <TimelineStyle>
       <Header />
       <div className="flex-column">
-        <PageTitle title={`# ${hashtag}`} data-test="hashtag-title" />
+        <PageTitle title={`# ${hashtag}`} dataTest="hashtag-title" />
 
         <div className="flex-row">
           <main>{showPosts()}</main>
