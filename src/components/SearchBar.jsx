@@ -58,10 +58,10 @@ export default function SearchBar() {
                 <p>{r.username}</p>
                 {followers.map((f) => {
                   if (f.followed_id === r.id) return (
-                    <>
-                      <RxDotFilled key={f.followed_id} />
+                    <div key={f.followed_id}>
+                      <RxDotFilled />
                       <span>following</span>
-                    </>)
+                    </div>)
                 })}
               </EachUser>
             )
