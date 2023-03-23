@@ -62,7 +62,7 @@ export default function PaginaPrincipal() {
                     <input data-test="password" disabled={disable} onChange={(e) => setPassword(e.target.value)} value={password} type='password' placeholder="password" name="password"></input>
                     <button data-test="login-btn" disabled={disable} type="submit">Entrar</button>
                 </form>
-                <Link to={"/sign-up"}  data-test="sign-up-link" ><p>Primeira vez? Crie uma conta!</p></Link>
+                <Link to="/sign-up"  data-test="sign-up-link" ><p>Primeira vez? Crie uma conta!</p></Link>
             </SignIn>
         </PrincipalStyled>
     )
