@@ -81,7 +81,7 @@ export default function UserTimeline() {
     }
 
     if (posts[0].url === null) {
-      return <p className="no-posts">There are no posts yet</p>;
+      return <p className="no-posts" data-test="message">There are no posts yet</p>;
     }
 
     if (posts) {

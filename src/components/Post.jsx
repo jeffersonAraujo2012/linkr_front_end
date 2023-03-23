@@ -2,10 +2,10 @@ import { ReactTagify } from "react-tagify";
 import styled from "styled-components";
 import LinkPost from "./LinkPost";
 import { Link, useNavigate } from "react-router-dom";
-import trash from "../assets/delete.png"
-import edit from "../assets/edit.png"
-import buttonLike from "../assets/like.png"
-import buttonLike2 from "../assets/like2.png"
+import trash from "../assets/delete.png";
+import edit from "../assets/edit.png";
+import buttonLike from "../assets/like.png";
+import buttonLike2 from "../assets/like2.png";
 import { useRef, useState } from "react";
 import axios from "axios";
 
@@ -20,132 +20,143 @@ export default function Post({ data, updatePost }) {
   const inputRef = useRef(null);
 
   function openModal() {
-    setModal(true)
+    setModal(true);
   }
 
   function likePost() {
-    console.log(data)
-    axios.post(process.env.REACT_APP_API_URL + "/posts/like", { data })
-    .then((res) => {
-        setLike(!like)
+    console.log(data);
+    axios
+      .post(process.env.REACT_APP_API_URL + "/posts/like", { data })
+      .then((res) => {
+        setLike(!like);
         setUpdate(!update);
-        setQuantLike(res.data.count)
-        console.log(res.data.count)
+        setQuantLike(res.data.count);
+        console.log(res.data.count);
       })
-    .catch((err) => console.log(err.response.data))
+      .catch((err) => console.log(err.response.data));
   }
 
   function deletePost() {
-    axios.delete(process.env.REACT_APP_API_URL + "/posts", { data })
-    .then(() => {
-        alert('post deletado com sucesso!')
+    axios
+      .delete(process.env.REACT_APP_API_URL + "/posts", { data })
+      .then(() => {
+        alert("post deletado com sucesso!");
         setUpdate(!update);
       })
-    .catch((err) => alert('Não foi possível deletar o post.'))
+      .catch((err) => alert("Não foi possível deletar o post."));
   }
 
   function editPost(e) {
     if (e.keyCode === 27) {
-      setVisivel(true)
-      setDescription(data.description)
-      return
+      setVisivel(true);
+      setDescription(data.description);
+      return;
     }
-  
+
     if (e.keyCode === 13) {
-      const edit = { id: data.id, description, user_id: data.user_id }
-  
-      axios.patch(process.env.REACT_APP_API_URL + "/posts", edit)
+      const edit = { id: data.id, description, user_id: data.user_id };
+
+      axios
+        .patch(process.env.REACT_APP_API_URL + "/posts", edit)
         .then(() => {
-          alert('post editado com sucesso!')
+          alert("post editado com sucesso!");
           setUpdate(!update);
         })
-        .catch((err) => console.log(err.response.data))
+        .catch((err) => console.log(err.response.data));
     }
   }
 
   return (
-
     <PostStyle data-test="post">
       <div className="container">
         <div className="post_owner_image">
           <img src={data.picture_user} alt={data.username} />
         </div>
 
-        {
-            !like? (
-              <figure>
-                <img src={buttonLike} onClick={likePost} />
-                <figcaption>{quantLike} likes</figcaption>
-              </figure>
-            ) : (
-              <figure>
-                <img src={buttonLike2} onClick={likePost} />
-                <figcaption>{quantLike} likes</figcaption>
-              </figure>
-
-            )
-        }
-
+        {!like ? (
+          <figure>
+            <img src={buttonLike} onClick={likePost} />
+            <figcaption>{quantLike} likes</figcaption>
+          </figure>
+        ) : (
+          <figure>
+            <img src={buttonLike2} onClick={likePost} />
+            <figcaption>{quantLike} likes</figcaption>
+          </figure>
+        )}
       </div>
 
       <div className="post_content">
         <div>
-          <Link to={`/usertimeline/${data.user_id}`} data-test="username">
-          {data.username}
-        </Link>
+          <Link to={`/user/${data.user_id}`} data-test="username">
+            {data.username}
+          </Link>
           <div className="edit_and_delete">
-            <img src={edit} onClick={() => {
-              setVisivel(false)
-              console.log(visivel)
-              inputRef.current.focus()
-            }}/>
+            <img
+              src={edit}
+              onClick={() => {
+                setVisivel(false);
+                console.log(visivel);
+                inputRef.current.focus();
+              }}
+            />
             <img src={trash} onClick={openModal} />
           </div>
         </div>
 
         {modal && (
-        <div className="modal">
-          <h1>Are you sure you want to delete this post?</h1>
-          <div>
-            <button className="no" onClick={() => setModal(false)}>No, go back</button>
-            <button className="yes" onClick={() => {
-              setModal(false)
-              deletePost()
-              }}>Yes, delete it</button>
-          </div>
-        </div>
-      )}
-          <div>
-            {visivel ? (
-                <ReactTagify
-                tagStyle={tagStyle}
-                tagClicked={(tag) => {
-                  const hash = tag.slice(1);
-                  navigate(`/hashtag/${hash}`);
+          <div className="modal">
+            <h1>Are you sure you want to delete this post?</h1>
+            <div>
+              <button className="no" onClick={() => setModal(false)}>
+                No, go back
+              </button>
+              <button
+                className="yes"
+                onClick={() => {
+                  setModal(false);
+                  deletePost();
                 }}
               >
-                <p className="post_description" onClick={() => setVisivel(false)}>{data.description}</p>
-      
-              </ReactTagify>
-              ) : (
-                  <input
-                  type="text"
-                  className="post_description"
-                  ref={inputRef}
-                  value={description}
-                  onChange={(e) => setDescription(e.currentTarget.value)}
-                  onKeyDown={editPost}
-                  onBlur={() => {
-                    setVisivel(true)
-                    console.log(visivel)
-                    setDescription(data.description)
-                  }}
-                  required
-                />
-              )
-            }
-              
+                Yes, delete it
+              </button>
+            </div>
           </div>
+        )}
+        <div>
+          {visivel ? (
+            <ReactTagify
+              tagStyle={tagStyle}
+              tagClicked={(tag) => {
+                const hash = tag.slice(1);
+                navigate(`/hashtag/${hash}`);
+              }}
+            >
+              <p
+                className="post_description"
+                onClick={() => setVisivel(false)}
+                data-test="description"
+              >
+                {data.description}
+              </p>
+            </ReactTagify>
+          ) : (
+            <input
+              type="text"
+              className="post_description"
+              ref={inputRef}
+              value={description}
+              onChange={(e) => setDescription(e.currentTarget.value)}
+              onKeyDown={editPost}
+              onBlur={() => {
+                setVisivel(true);
+                console.log(visivel);
+                setDescription(data.description);
+              }}
+              required
+            />
+          )}
+        </div>
 
         <LinkPost url={data.url} />
       </div>
@@ -174,14 +185,13 @@ const PostStyle = styled.div`
     gap: 19px;
 
     figure {
-      
       img {
         height: 18px;
         width: 20px;
         margin-left: 15px;
         margin-bottom: 4px;
       }
-  
+
       figcaption {
         font-family: Lato;
         font-size: 11px;
@@ -223,7 +233,7 @@ const PostStyle = styled.div`
     div {
       display: flex;
       justify-content: space-between;
-      
+
       .edit_and_delete {
         gap: 13px;
 
@@ -252,7 +262,7 @@ const PostStyle = styled.div`
         font-weight: 700;
         line-height: 41px;
         text-align: center;
-        color: #FFFFFF;
+        color: #ffffff;
       }
       div {
         display: flex;
@@ -264,27 +274,27 @@ const PostStyle = styled.div`
           min-width: 134px;
           border-radius: 5px;
           border: hidden;
-          background-color: #FFFFFF;
+          background-color: #ffffff;
           font-family: Lato;
           font-size: 18px;
           font-weight: 700;
           line-height: 22px;
         }
         .no {
-          background-color: #FFFFFF;
-          color: #1877F2;
+          background-color: #ffffff;
+          color: #1877f2;
         }
         .yes {
-          background-color: #1877F2;
-          color: #FFFFFF;
+          background-color: #1877f2;
+          color: #ffffff;
         }
       }
     }
     // h3 {
-    //   display: ${props => props.visivel? 'initial' : 'none'};
+    //   display: ${(props) => (props.visivel ? "initial" : "none")};
     // }
     // input {
-    //   display: ${props => props.visivel === false? 'initial' : 'none'};
+    //   display: ${(props) => (props.visivel === false ? "initial" : "none")};
     // }
   }
 
@@ -315,7 +325,6 @@ const PostStyle = styled.div`
 // const PostInput = styled.input.attrs((props) => ({ visivel: props.visivel }))`
 //   display: ${(props) => (props.visivel === false ? "initial" : "none")};
 // `;
-
 
 const tagStyle = {
   fontWeight: 700,

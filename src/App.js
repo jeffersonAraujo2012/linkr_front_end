@@ -26,7 +26,7 @@ export default function App() {
                 <Route path="/sign-up" element={<Signup />} />
                 <Route path="/timeline" element={<Timeline />} />
                 <Route path="hashtag/:hashtag" element={<Hashtag />} />
-                <Route path="/usertimeline/:id" element={<UserTimeline />} />
+                <Route path="/user/:id" element={<UserTimeline />} />
               </Routes>
             </BrowserRouter>
           </FollowersContext.Provider>

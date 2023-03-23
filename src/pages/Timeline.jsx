@@ -54,7 +54,7 @@ export default function Timeline() {
     const resultPosts = axios.get(process.env.REACT_APP_API_URL + "/posts");
     resultPosts.then((res) => setPosts(res.data));
     resultPosts.catch((res) => {
-      alert(
+      console.log(
         "An error occured while trying to fetch the posts, please refresh the page"
       );
     });
@@ -83,7 +83,7 @@ export default function Timeline() {
     }
 
     if (posts?.length === 0) {
-      return <p className="no-posts">There are no posts yet</p>;
+      return <p className="no-posts" data-test="message">There are no posts yet</p>;
     }
 
     if (posts) {
