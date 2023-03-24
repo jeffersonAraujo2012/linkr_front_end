@@ -51,20 +51,20 @@ export default function Timeline() {
       });
     }
 
-    const resultPosts = axios.get(process.env.REACT_APP_API_URL + "/posts");
+    const resultPosts = axios.get(process.env.REACT_APP_API_URL + `/posts/${userData.id}`);
     resultPosts.then((res) => setPosts(res.data));
     resultPosts.catch((res) => {
-      alert(
+      console.log(
         "An error occured while trying to fetch the posts, please refresh the page"
       );
     });
 
-    /*if (userData === undefined) return;
-    axios.get(`${process.env.REACT_APP_API_URL}/follows/${userData.id}`
-    ).then((res) => {
-      setFollowers(res.data);
-    }).catch((err) => alert(err.response.data));
-    */
+    // if (userData === undefined) return;
+    // axios.get(`${process.env.REACT_APP_API_URL}/follows/${userData.id}`
+    // ).then((res) => {
+    //   setFollowers(res.data);
+    // }).catch((err) => alert(err.response.data));
+    
 
   }, [update, userData]);
 
@@ -82,8 +82,10 @@ export default function Timeline() {
       );
     }
 
+    if (followers?.length === 0) return <p data-test="message" className="no-posts">You don't follow anyone yet.<br/>Search for new friends!</p>;
+
     if (posts?.length === 0) {
-      return <p className="no-posts">There are no posts yet</p>;
+      return <p data-test="message" className="no-posts">No posts found from your friends</p>;
     }
 
     if (posts) {

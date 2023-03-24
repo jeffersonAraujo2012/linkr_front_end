@@ -2,14 +2,25 @@ import SearchBar from "./SearchBar";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom'
 import AuthContext from "../contexts/AuthContext";
+import FollowersContext from "../contexts/FollowersContext";
+import axios from "axios";
 
 export default function Header() {
     const [showLogout, setShowLogout] = useState(false);
     const navigate = useNavigate();
     const {userData} = useContext(AuthContext);
+    const [followers, setFollowers] = useContext(FollowersContext);
+
+    useEffect(() => {
+        if (userData === undefined) return;
+    axios.get(`${process.env.REACT_APP_API_URL}/follows/${userData.id}`
+    ).then((res) => {
+      setFollowers(res.data);
+    }).catch((err) => console.log(err.response.data));
+    }, []);
 
     return (
         <ContainerHeader>
@@ -19,11 +30,16 @@ export default function Header() {
             <SearchBar />
 
             <ContainerLogout>
-                {showLogout ?
-                    <IoIosArrowUp onClick={() => (setShowLogout(false))} /> :
-                    <IoIosArrowDown onClick={() => (setShowLogout(true))} />
-                }
-                <img src={userData.picture_url} />
+                <div className="wrapper" onClick={() => {
+                    if (showLogout) setShowLogout(false);
+                    else setShowLogout(true);
+                }}>
+                    {showLogout ?
+                        <IoIosArrowUp /> :
+                        <IoIosArrowDown />
+                    }
+                    <img src={userData.picture_url} data-test="avatar" />
+                </div>
                 <LogOutBar data-test="menu" showLogout={showLogout}>
                     <p data-test="logout" onClick={() => {
                         localStorage.clear()
@@ -71,6 +87,11 @@ const ContainerLogout = styled.div`
         width: 49px;
         height: 49px;
         border-radius: 50px;
+    }
+    & > .wrapper {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
     }
 `
 
