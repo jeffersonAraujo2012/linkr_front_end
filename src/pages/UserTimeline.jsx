@@ -65,7 +65,7 @@ export default function UserTimeline() {
     resultPosts.catch((err) => {
       alert(err.response.data);
     });
-    
+
     followers?.map((f) => {
       if (f.followed_id == id) setIsFollowing(true);
     })
@@ -95,7 +95,7 @@ export default function UserTimeline() {
             key={post.id}
             data={post}
             updatePost={[updateUserPage, setUpdateUserPage]}
-            user={ userData }
+            user={userData}
           />
         );
       });
@@ -140,11 +140,16 @@ export default function UserTimeline() {
             <img src={posts[0].picture_user} />
             <p>{posts[0].username}'s posts </p>
           </TitleStyle>
-          {userData.id == id ? <></> : isFollowing ?
-            <UnfollowButton data-test="follow-btn" disabled={disable} onClick={unFollowUser}>Unfollow</UnfollowButton> :
-            <FollowButton data-test="follow-btn" disabled={disable} onClick={followUser}>Follow</FollowButton>}
-          {/* <FollowButton disabled={disable} onClick={followUser}>Follow</FollowButton> */}
-          {/* <UnfollowButton>Unfollow</UnfollowButton> */}
+          {userData.id == id ? <></> : (
+            <FollowUnfollowBtn
+              data-test="follow-btn"
+              disabled={disable}
+              onClick={isFollowing ? unFollowUser : followUser}
+              mode={isFollowing ? "unfollow" : "follow"}
+            >
+              {isFollowing ? "Unfollow" : "Follow"}
+            </FollowUnfollowBtn>
+          )}
         </ContainerTittle>
 
         <div className="flex-row">
@@ -290,12 +295,15 @@ const TitleStyle = styled.div`
   }
 `;
 
-const FollowButton = styled.button`
-  color: #FFFFFF;
-  background-color: #1877F2;
-`
-
-const UnfollowButton = styled.button`
-  color: #1877F2;
-  background-color: #FFFFFF;
-`
+const FollowUnfollowBtn = styled.button`
+  ${(props) =>
+    props.mode === "follow"
+      ? `
+    color: #FFFFFF;
+    background-color: #1877F2;
+  `
+      : `
+    color: #1877F2;
+    background-color: #FFFFFF;
+  `}
+  `;
