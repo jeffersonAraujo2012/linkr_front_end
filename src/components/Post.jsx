@@ -17,7 +17,11 @@ export default function Post({ data, updatePost, user }) {
   const [description, setDescription] = useState(data.description);
   const [visivel, setVisivel] = useState(true);
   // const [like, setLike] = useState(data.liked_by?.find((i) => i=user?.id))
-  const [like, setLike] = useState(data.liked_by.includes(user.id))
+  const [like, setLike] = useState(data.liked_by.includes(user?.id))
+  console.log(user)
+  console.log(data.liked_by)
+  console.log(user?.id)
+  console.log(like)
   const [quantLike, setQuantLike] = useState(data.likes_count)
   const inputRef = useRef(null);
 

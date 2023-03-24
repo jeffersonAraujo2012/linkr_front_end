@@ -24,7 +24,7 @@ export default function UserTimeline() {
   let userName = "";
   let configHeaders;
 
-  console.log(userData);
+  // console.log(userData);
   useEffect(() => {
 
     const token = localStorage.getItem("access_token");
@@ -95,6 +95,7 @@ export default function UserTimeline() {
             key={post.id}
             data={post}
             updatePost={[updateUserPage, setUpdateUserPage]}
+            user={ userData }
           />
         );
       });
