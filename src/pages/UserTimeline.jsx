@@ -8,13 +8,14 @@ import Post from "../components/Post";
 import Trending from "../components/Trending";
 import AuthContext from "../contexts/AuthContext";
 import FollowersContext from "../contexts/FollowersContext";
+import IsFollowingContext from "../contexts/IsFollowingContext";
 import UpdateUserPage from "../contexts/UpdateUserPage";
 
 export default function UserTimeline() {
   const { id } = useParams();
   const [posts, setPosts] = useState(undefined);
   const [disable, setDisable] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(false);
+  const [isFollowing, setIsFollowing] = useContext(IsFollowingContext);
   const [followers, setFollowers] = useContext(FollowersContext);
   const [updateUserPage, setUpdateUserPage] = useContext(UpdateUserPage);
   const { userData, setUserData } = useContext(AuthContext);
@@ -65,12 +66,11 @@ export default function UserTimeline() {
       alert(err.response.data);
     });
     
-    console.log(followers)
     followers?.map((f) => {
       if (f.followed_id == id) setIsFollowing(true);
     })
 
-  }, [updateUserPage, userData]);
+  }, [updateUserPage, userData, followers]);
 
   function showPosts() {
     if (!posts) {

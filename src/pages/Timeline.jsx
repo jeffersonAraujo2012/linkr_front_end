@@ -6,7 +6,6 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import PageTitle from "../components/PageTitle";
 import Post from "../components/Post";
-import SearchBar from "../components/SearchBar";
 import SendPostForm from "../components/SendPostForm";
 import Trending from "../components/Trending";
 import AuthContext from "../contexts/AuthContext";
@@ -51,21 +50,13 @@ export default function Timeline() {
       });
     }
 
-    const resultPosts = axios.get(process.env.REACT_APP_API_URL + `/posts/${userData.id}`);
+    const resultPosts = axios.get(process.env.REACT_APP_API_URL + `/posts/${userData?.id}`);
     resultPosts.then((res) => setPosts(res.data));
     resultPosts.catch((res) => {
       console.log(
         "An error occured while trying to fetch the posts, please refresh the page"
       );
     });
-
-    // if (userData === undefined) return;
-    // axios.get(`${process.env.REACT_APP_API_URL}/follows/${userData.id}`
-    // ).then((res) => {
-    //   setFollowers(res.data);
-    // }).catch((err) => alert(err.response.data));
-    
-
   }, [update, userData]);
 
   if (!userData) {

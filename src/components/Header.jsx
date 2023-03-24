@@ -7,12 +7,14 @@ import { useNavigate } from 'react-router-dom'
 import AuthContext from "../contexts/AuthContext";
 import FollowersContext from "../contexts/FollowersContext";
 import axios from "axios";
+import IsFollowingContext from "../contexts/IsFollowingContext";
 
 export default function Header() {
     const [showLogout, setShowLogout] = useState(false);
     const navigate = useNavigate();
     const {userData} = useContext(AuthContext);
     const [followers, setFollowers] = useContext(FollowersContext);
+    const [isFollowing] = useContext(IsFollowingContext);
 
     useEffect(() => {
         if (userData === undefined) return;
@@ -20,7 +22,7 @@ export default function Header() {
     ).then((res) => {
       setFollowers(res.data);
     }).catch((err) => console.log(err.response.data));
-    }, []);
+    }, [isFollowing]);
 
     return (
         <ContainerHeader>
