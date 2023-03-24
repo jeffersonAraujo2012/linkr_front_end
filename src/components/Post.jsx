@@ -25,7 +25,6 @@ export default function Post({ data, updatePost, user }) {
   }
 
   function likePost() {
-    // console.log(data)
     axios.post(process.env.REACT_APP_API_URL + "/posts/like", { ...data, user: user[0].id })
       .then((res) => {
         setLike(!like);
@@ -318,14 +317,6 @@ const PostStyle = styled.div`
     }
   }
 `;
-
-// const PostDescription = styled.h3.attrs((props) => ({ visivel: props.visivel }))`
-//   display: ${(props) => (props.visivel ? "initial" : "none")};
-// `;
-
-// const PostInput = styled.input.attrs((props) => ({ visivel: props.visivel }))`
-//   display: ${(props) => (props.visivel === false ? "initial" : "none")};
-// `;
 
 const tagStyle = {
   fontWeight: 700,
