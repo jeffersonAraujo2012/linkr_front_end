@@ -70,7 +70,7 @@ export default function Hashtag() {
     }
 
     if (posts?.length === 0) {
-      return <p className="no-posts">There are no posts yet</p>;
+      return <p className="no-posts" data-test="message">There are no posts yet</p>;
     }
 
     if (posts) {
@@ -90,7 +90,7 @@ export default function Hashtag() {
     <TimelineStyle>
       <Header />
       <div className="flex-column">
-        <PageTitle title={`# ${hashtag}`} data-test="hashtag-title" />
+        <PageTitle title={`# ${hashtag}`} dataTest="hashtag-title" />
 
         <div className="flex-row">
           <main>{showPosts()}</main>

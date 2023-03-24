@@ -31,7 +31,7 @@ export default function SearchBar() {
   }
 
   function handleClick(id) {
-    navigate(`/usertimeline/${id}`);
+    navigate(`/user/${id}`);
     setUpdateUserPage(!updateUserPage);
   }
 
