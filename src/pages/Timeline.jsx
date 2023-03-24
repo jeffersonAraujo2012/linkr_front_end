@@ -89,7 +89,7 @@ export default function Timeline() {
     if (posts) {
       return posts.map((post) => {
         return (
-          <Post key={post.id} data={post} updatePost={[update, setUpdate]} />
+          <Post key={post.id} data={post} updatePost={[update, setUpdate]} user={[userData, setUserData]} />
         );
       });
     }

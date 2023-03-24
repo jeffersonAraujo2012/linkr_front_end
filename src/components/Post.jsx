@@ -9,13 +9,14 @@ import buttonLike2 from "../assets/like2.png"
 import { useRef, useState } from "react";
 import axios from "axios";
 
-export default function Post({ data, updatePost }) {
+export default function Post({ data, updatePost, user }) {
   const navigate = useNavigate();
   const [modal, setModal] = useState(false);
   const [update, setUpdate] = updatePost;
   const [description, setDescription] = useState(data.description);
   const [visivel, setVisivel] = useState(true);
-  const [like, setLike] = useState(data.liked_by.find((i) => i=data.id))
+  const [like, setLike] = useState(data.liked_by.find((i) => i=user.id))
+  console.log(user[0])
   const [quantLike, setQuantLike] = useState(data.likes_count)
   const inputRef = useRef(null);
 
@@ -24,8 +25,8 @@ export default function Post({ data, updatePost }) {
   }
 
   function likePost() {
-    console.log(data)
-    axios.post(process.env.REACT_APP_API_URL + "/posts/like", { data })
+    // console.log(data)
+    axios.post(process.env.REACT_APP_API_URL + "/posts/like", { ...data, user: user[0].id })
     .then((res) => {
         setLike(!like)
         setUpdate(!update);
