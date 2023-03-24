@@ -24,39 +24,25 @@ export default function UserTimeline() {
   let userName = "";
   let configHeaders;
 
-  // console.log(userData);
+  const token = localStorage.getItem("access_token");
+  console.log(token);
+  if (token) {
+    const resultMe = axios.get(process.env.REACT_APP_API_URL + "/users/me", {
+      headers: {
+        authorization: "Bearer " + token,
+      },
+    });
+    resultMe.then((res) => {
+      if (JSON.stringify(userData) !== JSON.stringify(res.data)) {
+        setUserData(res.data);
+      }
+    });
+    resultMe.catch((_) => navigate("/"));
+  } else {
+    navigate("/");
+  }
+
   useEffect(() => {
-
-    const token = localStorage.getItem("access_token");
-    function isNotLogged() {
-      alert("You should be logged!");
-      navigate("/");
-    }
-
-    if (!token) {
-      isNotLogged();
-    } else {
-      configHeaders = {
-        headers: {
-          authorization: "Bearer " + token,
-        },
-      };
-
-      const resultMe = axios.get(
-        process.env.REACT_APP_API_URL + "/users/me",
-        configHeaders
-      );
-      resultMe.then((res) => {
-        if (JSON.stringify(userData) !== JSON.stringify(res.data)) {
-          setUserData(res.data);
-        }
-      });
-      resultMe.catch((_) => {
-        localStorage.removeItem("access_token");
-        isNotLogged();
-      });
-    }
-
     const resultPosts = axios.get(
       `${process.env.REACT_APP_API_URL}/user/${id}`,
       configHeaders
@@ -68,8 +54,7 @@ export default function UserTimeline() {
 
     followers?.map((f) => {
       if (f.followed_id == id) setIsFollowing(true);
-    })
-
+    });
   }, [updateUserPage, userData, followers]);
 
   function showPosts() {
@@ -83,7 +68,11 @@ export default function UserTimeline() {
     }
 
     if (posts[0].url === null) {
-      return <p className="no-posts" data-test="message">There are no posts yet</p>;
+      return (
+        <p className="no-posts" data-test="message">
+          There are no posts yet
+        </p>
+      );
     }
 
     if (posts) {
@@ -104,32 +93,38 @@ export default function UserTimeline() {
 
   function followUser() {
     setDisable(true);
-    axios.post(`${process.env.REACT_APP_API_URL}/follows`, {
-      followerId: userData.id,
-      followedId: id
-    }).then((res) => {
-      setDisable(false)
-      setIsFollowing(true)
-    }).catch((error) => {
-      setDisable(false)
-      alert(error.response.message);
-    })
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/follows`, {
+        followerId: userData.id,
+        followedId: id,
+      })
+      .then((res) => {
+        setDisable(false);
+        setIsFollowing(true);
+      })
+      .catch((error) => {
+        setDisable(false);
+        alert(error.response.message);
+      });
   }
 
   function unFollowUser() {
     setDisable(true);
-    axios.delete(`${process.env.REACT_APP_API_URL}/follows/${userData.id}/${id}`)
+    axios
+      .delete(`${process.env.REACT_APP_API_URL}/follows/${userData.id}/${id}`)
       .then((res) => {
-        setDisable(false)
-        setIsFollowing(false)
-      }).catch((error) => {
-        console.log(error)
-        setDisable(false)
-        alert(error.response.message);
+        setDisable(false);
+        setIsFollowing(false);
       })
+      .catch((error) => {
+        console.log(error);
+        setDisable(false);
+        alert(error.response.message);
+      });
   }
 
-  if (posts === undefined) return <></>;
+  if (posts === undefined) return "No posts";
+  if (!userData) return "Loading";
 
   return (
     <TimelineStyle>
@@ -140,7 +135,9 @@ export default function UserTimeline() {
             <img src={posts[0].picture_user} />
             <p>{posts[0].username}'s posts </p>
           </TitleStyle>
-          {userData.id == id ? <></> : (
+          {userData.id == id ? (
+            <></>
+          ) : (
             <FollowUnfollowBtn
               data-test="follow-btn"
               disabled={disable}
@@ -242,7 +239,7 @@ const ContainerTittle = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 40px;
-  button{
+  button {
     font-size: 14px;
     font-weight: 700;
     width: 112px;
@@ -250,16 +247,16 @@ const ContainerTittle = styled.div`
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    :hover{
-      box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
+    :hover {
+      box-shadow: rgba(0, 0, 0, 0.15) 0 3px 9px 0;
       transform: translateY(-1px);
-    }    
-    :active{
-      box-shadow: rgba(0, 0, 0, .125) 0 3px 5px inset;
+    }
+    :active {
+      box-shadow: rgba(0, 0, 0, 0.125) 0 3px 5px inset;
       outline: 0;
       transform: translateY(1px);
     }
-    :disabled{
+    :disabled {
       cursor: default;
       background-color: grey;
     }
@@ -270,7 +267,7 @@ const ContainerTittle = styled.div`
       width: 80px;
     }
   }
-`
+`;
 
 const TitleStyle = styled.div`
   display: flex;
@@ -306,4 +303,4 @@ const FollowUnfollowBtn = styled.button`
     color: #1877F2;
     background-color: #FFFFFF;
   `}
-  `;
+`;
