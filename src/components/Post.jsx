@@ -6,6 +6,7 @@ import trash from "../assets/delete.png";
 import edit from "../assets/edit.png";
 import buttonLike from "../assets/like.png";
 import buttonLike2 from "../assets/like2.png";
+import repost from "../assets/repost.png";
 import { useRef, useState } from "react";
 import axios from "axios";
 
@@ -83,6 +84,12 @@ export default function Post({ data, updatePost, user }) {
             <figcaption>{quantLike} likes</figcaption>
           </figure>
         )}
+
+        <figure>
+          <img className="repost" src={repost} onClick={() => alert('clicou!')} />
+          <figcaption className="repost-description">0 reposts</figcaption>
+        </figure>
+        
       </div>
 
       <div className="post_content">
@@ -196,9 +203,19 @@ const PostStyle = styled.div`
         font-family: Lato;
         font-size: 11px;
         font-weight: 400;
-        // text-align: center;
-        margin-left: 12px;
+        margin-left: 10px;
         color: #FFFFFF;
+      }
+
+      .repost{
+        height: 12px;
+        width: 20px;
+        margin-left: 15px;
+        cursor: pointer;
+      }
+
+      .repost-description {
+        margin-left: 4px;
       }
     }
   }
@@ -209,7 +226,7 @@ const PostStyle = styled.div`
     img {
       width: 50px;
       height: 50px;
-
+      margin-left: 0px;
       border-radius: 100%;
     }
   }
