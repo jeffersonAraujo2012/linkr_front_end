@@ -82,10 +82,10 @@ export default function Timeline() {
       );
     }
 
-    if (followers?.length === 0) return <p className="no-posts">You don't follow anyone yet.<br/>Search for new friends!</p>;
+    if (followers?.length === 0) return <p data-test="message" className="no-posts">You don't follow anyone yet.<br/>Search for new friends!</p>;
 
     if (posts?.length === 0) {
-      return <p className="no-posts">No posts found from your friends</p>;
+      return <p data-test="message" className="no-posts">No posts found from your friends</p>;
     }
 
     if (posts) {
