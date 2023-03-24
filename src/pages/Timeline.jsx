@@ -18,39 +18,28 @@ export default function Timeline() {
   const [followers, setFollowers] = useContext(FollowersContext);
   const navigate = useNavigate();
 
-  console.log(userData);
+  const token = localStorage.getItem("access_token");
+  console.log(token);
+  if (token) {
+    const resultMe = axios.get(process.env.REACT_APP_API_URL + "/users/me", {
+      headers: {
+        authorization: 'Bearer ' + token,
+      },
+    });
+    resultMe.then((res) => {
+      if (JSON.stringify(userData) !== JSON.stringify(res.data)) {
+        setUserData(res.data);
+      }
+    });
+    resultMe.catch((_) => navigate("/"));
+  } else {
+    navigate("/");
+  }
+
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    function isNotLogged() {
-      alert("You should be logged!");
-      navigate("/");
-    }
-
-    if (!token) {
-      isNotLogged();
-    } else {
-      const configHeaders = {
-        headers: {
-          authorization: "Bearer " + token,
-        },
-      };
-
-      const resultMe = axios.get(
-        process.env.REACT_APP_API_URL + "/users/me",
-        configHeaders
-      );
-      resultMe.then((res) => {
-        if (JSON.stringify(userData) !== JSON.stringify(res.data)) {
-          setUserData(res.data);
-        }
-      });
-      resultMe.catch((_) => {
-        localStorage.removeItem("access_token");
-        isNotLogged();
-      });
-    }
-
-    const resultPosts = axios.get(process.env.REACT_APP_API_URL + `/posts/${userData?.id}`);
+    const resultPosts = axios.get(
+      process.env.REACT_APP_API_URL + `/posts/${userData?.id}`
+    );
     resultPosts.then((res) => setPosts(res.data));
     resultPosts.catch((res) => {
       console.log(
@@ -73,16 +62,32 @@ export default function Timeline() {
       );
     }
 
-    if (followers?.length === 0) return <p data-test="message" className="no-posts">You don't follow anyone yet.<br/>Search for new friends!</p>;
+    if (followers?.length === 0)
+      return (
+        <p data-test="message" className="no-posts">
+          You don't follow anyone yet.
+          <br />
+          Search for new friends!
+        </p>
+      );
 
     if (posts?.length === 0) {
-      return <p data-test="message" className="no-posts">No posts found from your friends</p>;
+      return (
+        <p data-test="message" className="no-posts">
+          No posts found from your friends
+        </p>
+      );
     }
 
     if (posts) {
       return posts.map((post) => {
         return (
-          <Post key={post.id} data={post} updatePost={[update, setUpdate]} user={ userData } />
+          <Post
+            key={post.id}
+            data={post}
+            updatePost={[update, setUpdate]}
+            user={userData}
+          />
         );
       });
     }
