@@ -23,6 +23,7 @@ export default function UserTimeline() {
   let userName = "";
   let configHeaders;
 
+  console.log(userData);
   useEffect(() => {
 
     const token = localStorage.getItem("access_token");
@@ -64,11 +65,12 @@ export default function UserTimeline() {
       alert(err.response.data);
     });
     
-    followers.map((f) => {
+    console.log(followers)
+    followers?.map((f) => {
       if (f.followed_id == id) setIsFollowing(true);
     })
 
-  }, [updateUserPage, userData, isFollowing]);
+  }, [updateUserPage, userData]);
 
   function showPosts() {
     if (!posts) {
@@ -138,8 +140,8 @@ export default function UserTimeline() {
             <p>{posts[0].username}'s posts </p>
           </TitleStyle>
           {userData.id == id ? <></> : isFollowing ?
-            <UnfollowButton disabled={disable} onClick={unFollowUser}>Unfollow</UnfollowButton> :
-            <FollowButton disabled={disable} onClick={followUser}>Follow</FollowButton>}
+            <UnfollowButton data-test="follow-btn" disabled={disable} onClick={unFollowUser}>Unfollow</UnfollowButton> :
+            <FollowButton data-test="follow-btn" disabled={disable} onClick={followUser}>Follow</FollowButton>}
           {/* <FollowButton disabled={disable} onClick={followUser}>Follow</FollowButton> */}
           {/* <UnfollowButton>Unfollow</UnfollowButton> */}
         </ContainerTittle>
