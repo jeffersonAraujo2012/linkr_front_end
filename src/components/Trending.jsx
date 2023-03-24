@@ -28,7 +28,7 @@ export default function Trending() {
             to={`/hashtag/${hashtag.name}`}
             data-test="hashtag"
           >
-            {"# " + hashtag.name}
+            {"#" + hashtag.name}
           </Link>
         );
       })}
