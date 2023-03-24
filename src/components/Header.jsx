@@ -19,9 +19,8 @@ export default function Header() {
     axios.get(`${process.env.REACT_APP_API_URL}/follows/${userData.id}`
     ).then((res) => {
       setFollowers(res.data);
-    }).catch((err) => alert(err.response.data));
+    }).catch((err) => console.log(err.response.data));
     }, []);
-    
 
     return (
         <ContainerHeader>
