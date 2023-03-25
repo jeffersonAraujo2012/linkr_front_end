@@ -23,7 +23,7 @@ export default function Timeline() {
   if (token) {
     const resultMe = axios.get(process.env.REACT_APP_API_URL + "/users/me", {
       headers: {
-        authorization: 'Bearer ' + token,
+        authorization: "Bearer " + token,
       },
     });
     resultMe.then((res) => {
@@ -49,7 +49,12 @@ export default function Timeline() {
   }, [update, userData]);
 
   if (!userData) {
-    return "Loading";
+    return (
+      <>
+        "Loading"
+        <input data-test="link"></input>
+      </>
+    );
   }
 
   function showPosts() {
