@@ -35,6 +35,7 @@ export default function PaginaPrincipal() {
                 const userData = response.data;
                 setUserData(userData)
                 localStorage.setItem('access_token', userData.token);
+                localStorage.setItem('user_data', JSON.stringify(userData));
                 setDisable(false);
                 home()
             } )

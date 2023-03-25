@@ -13,27 +13,13 @@ export default function Hashtag() {
   const [posts, setPosts] = useState([]);
   const [updatePage, setUpdatePage] = useState(false);
   const { hashtag } = useParams();
-  const {userData, setUserData} = useContext(AuthContext);
+  //const {userData, setUserData} = useContext(AuthContext);
+  const [userData, setUserData] = useState(
+    JSON.parse(localStorage.getItem("user_data"))
+  );
   const navigate = useNavigate();
-  console.log(hashtag);
 
-  const token = localStorage.getItem("access_token");
-  console.log(token);
-  if (token) {
-    const resultMe = axios.get(process.env.REACT_APP_API_URL + "/users/me", {
-      headers: {
-        authorization: 'Bearer ' + token,
-      },
-    });
-    resultMe.then((res) => {
-      if (JSON.stringify(userData) !== JSON.stringify(res.data)) {
-        setUserData(res.data);
-      }
-    });
-    resultMe.catch((_) => navigate("/"));
-  } else {
-    navigate("/");
-  }
+  if (!userData) navigate("/");
 
   useEffect(() => {
     const resultPosts = axios.get(

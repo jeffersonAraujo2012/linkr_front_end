@@ -16,7 +16,9 @@ export default function SearchBar() {
   const navigate = useNavigate();
   const [followers] = useContext(FollowersContext);
   const [updateUserPage, setUpdateUserPage] = useContext(UpdateUserPage);
-  const { userData } = useContext(AuthContext);
+  const [userData, setUserData] = useState(
+    JSON.parse(localStorage.getItem("user_data"))
+  );
 
   function searchUser(event) {
     const searchTerm = event.target.value;
