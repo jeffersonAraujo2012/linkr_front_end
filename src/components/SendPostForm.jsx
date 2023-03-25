@@ -10,7 +10,9 @@ export default function SendPostForm({ updatePost }) {
   const [publishing, setPublishing] = useState(false);
   const [update, setUpdate] = updatePost;
   const [updataHashtags, setUpdataHashtags] = useContext(UpdateHashtagContext);
-  const {userData} = useContext(AuthContext)
+  const [userData, setUserData] = useState(
+    JSON.parse(localStorage.getItem("user_data"))
+  );
 
   console.log(userData);
   const mockUser = {
