@@ -9,12 +9,9 @@ import FollowersContext from "../contexts/FollowersContext";
 import axios from "axios";
 import IsFollowingContext from "../contexts/IsFollowingContext";
 
-export default function Header() {
+export default function Header({userData}) {
   const [showLogout, setShowLogout] = useState(false);
   const navigate = useNavigate();
-  const [userData, setUserData] = useState(
-    JSON.parse(localStorage.getItem("user_data"))
-  );
   const [followers, setFollowers] = useContext(FollowersContext);
   const [isFollowing] = useContext(IsFollowingContext);
 

@@ -4,22 +4,12 @@ import styled from "styled-components";
 import AuthContext from "../contexts/AuthContext";
 import UpdateHashtagContext from "../contexts/UpdataHashtagContext";
 
-export default function SendPostForm({ updatePost }) {
+export default function SendPostForm({ updatePost, userData }) {
   const [url, setUrl] = useState("");
   const [description, setDescription] = useState("");
   const [publishing, setPublishing] = useState(false);
   const [update, setUpdate] = updatePost;
   const [updataHashtags, setUpdataHashtags] = useContext(UpdateHashtagContext);
-  const [userData, setUserData] = useState(
-    JSON.parse(localStorage.getItem("user_data"))
-  );
-
-  console.log(userData);
-  const mockUser = {
-    username: "Jeff Araujo",
-    picture_user:
-      "https://i.pinimg.com/736x/b9/ae/86/b9ae8625cac70903db98382d3d3492be.jpg",
-  };
 
   function sendPost(e) {
     e.preventDefault();

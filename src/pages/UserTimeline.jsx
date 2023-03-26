@@ -115,7 +115,7 @@ export default function UserTimeline() {
 
   return (
     <TimelineStyle>
-      <Header />
+      <Header userData={userData}/>
       <div className="flex-column">
         <ContainerTittle>
           <TitleStyle>

@@ -10,6 +10,7 @@ import UserTimeline from "./pages/UserTimeline";
 import UpdateUserPage from "./contexts/UpdateUserPage";
 import FollowersContext from "./contexts/FollowersContext";
 import IsFollowingContext from "./contexts/IsFollowingContext";
+import TimelineTest from "./pages/TimelineTest";
 
 export default function App() {
   const [userData, setUserData] = useState();
@@ -28,7 +29,7 @@ export default function App() {
                 <Routes>
                   <Route path="/" element={<PaginaPrincipal />} />
                   <Route path="/sign-up" element={<Signup />} />
-                  <Route path="/timeline" element={<Timeline />} />
+                  <Route path="/timeline" element={<TimelineTest />} />
                   <Route path="hashtag/:hashtag" element={<Hashtag />} />
                   <Route path="/user/:id" element={<UserTimeline />} />
                 </Routes>

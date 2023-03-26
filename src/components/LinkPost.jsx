@@ -7,18 +7,16 @@ export default function LinkPost({ url }) {
   const [metadata, setMetadata] = useState(null);
 
   useEffect(() => {
-    if (url.slice(0, 8) !== "https://") {
-      const newUrl = `https://${url}`
-      url = newUrl;
-    }
     const fetchMetadata = async () => {
-      const data = await axios
-        .get(process.env.REACT_APP_API_URL + "/utils/urls/metadata?url=" + url)
-        .then((res) => res.data);
-      setMetadata(data);
+      try {
+        const resultMeta = await axios.get(process.env.REACT_APP_API_URL + "/utils/urls/metadata?url=" + url)
+        setMetadata(resultMeta.data)
+      } catch (error) {
+        console.log(error.message)
+      }
     };
     fetchMetadata();
-  }, [url]);
+  }, []);
 
   if (!metadata) return null;
 
