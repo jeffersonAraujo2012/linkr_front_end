@@ -17,12 +17,8 @@ export default function Post({ data, updatePost, user }) {
   const [description, setDescription] = useState(data.description);
   const [visivel, setVisivel] = useState(true);
   // const [like, setLike] = useState(data.liked_by?.find((i) => i=user?.id))
-  const [like, setLike] = useState(data.liked_by.includes(user?.id))
-  console.log(user)
-  console.log(data.liked_by)
-  console.log(user?.id)
-  console.log(like)
-  const [quantLike, setQuantLike] = useState(data.likes_count)
+  const [like, setLike] = useState(data.liked_by.includes(user?.id));
+  const [quantLike, setQuantLike] = useState(data.likes_count);
   const inputRef = useRef(null);
 
   function openModal() {
@@ -30,7 +26,11 @@ export default function Post({ data, updatePost, user }) {
   }
 
   function likePost() {
-    axios.post(process.env.REACT_APP_API_URL + "/posts/like", { ...data, user: user.id })
+    axios
+      .post(process.env.REACT_APP_API_URL + "/posts/like", {
+        ...data,
+        user: user.id,
+      })
       .then((res) => {
         setLike(!like);
         setUpdate(!update);
@@ -90,10 +90,13 @@ export default function Post({ data, updatePost, user }) {
         )}
 
         <figure>
-          <img className="repost" src={repost} onClick={() => alert('clicou!')} />
+          <img
+            className="repost"
+            src={repost}
+            onClick={() => alert("clicou!")}
+          />
           <figcaption className="repost-description">0 reposts</figcaption>
         </figure>
-        
       </div>
 
       <div className="post_content">
@@ -168,7 +171,6 @@ export default function Post({ data, updatePost, user }) {
             />
           )}
         </div>
-
         <LinkPost url={data.url} />
       </div>
     </PostStyle>
@@ -208,10 +210,10 @@ const PostStyle = styled.div`
         font-size: 11px;
         font-weight: 400;
         margin-left: 10px;
-        color: #FFFFFF;
+        color: #ffffff;
       }
 
-      .repost{
+      .repost {
         height: 12px;
         width: 20px;
         margin-left: 15px;

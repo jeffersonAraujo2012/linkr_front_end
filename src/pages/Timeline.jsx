@@ -33,27 +33,9 @@ export default function Timeline() {
         "An error occured while trying to fetch the posts, please refresh the page"
       );
     });
-  }, [update, userData]);
-
-  if (!userData) {
-    return (
-      <>
-        "Loading"
-        <input data-test="link"></input>
-      </>
-    );
-  }
+  }, [update]);
 
   function showPosts() {
-    if (!posts) {
-      return (
-        <div className="loading">
-          <p>Loading</p>
-          <PulseLoader color="white" />
-        </div>
-      );
-    }
-
     if (followers?.length === 0)
       return (
         <p data-test="message" className="no-posts">

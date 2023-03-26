@@ -1,77 +1,61 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { PulseLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../components/Header";
 import PageTitle from "../components/PageTitle";
 import Post from "../components/Post";
+import SendPostForm from "../components/SendPostForm";
 import Trending from "../components/Trending";
-import AuthContext from "../contexts/AuthContext";
+import FollowersContext from "../contexts/FollowersContext";
 
-export default function Hashtag() {
+export default function TimelineTest() {
   const [posts, setPosts] = useState([]);
-  const [updatePage, setUpdatePage] = useState(false);
-  const { hashtag } = useParams();
-  //const {userData, setUserData} = useContext(AuthContext);
+  const [update, setUpdate] = useState(false);
   const [userData, setUserData] = useState(
     JSON.parse(localStorage.getItem("user_data"))
   );
+  //const { userData, setUserData } = useContext(AuthContext);
+  const [followers, setFollowers] = useContext(FollowersContext);
   const navigate = useNavigate();
 
   if (!userData) navigate("/");
 
   useEffect(() => {
     const resultPosts = axios.get(
-      process.env.REACT_APP_API_URL + "/posts/hashtag/" + hashtag
+      process.env.REACT_APP_API_URL + `/posts/${userData?.id}`
     );
     resultPosts.then((res) => setPosts(res.data));
     resultPosts.catch((res) => {
-      alert(
+      console.log(
         "An error occured while trying to fetch the posts, please refresh the page"
       );
     });
-  }, [updatePage]);
-
-  function showPosts() {
-    if (!posts) {
-      return (
-        <div className="loading">
-          <p>Loading</p>
-          <PulseLoader color="white" />
-        </div>
-      );
-    }
-
-    if (posts?.length === 0) {
-      return <p className="no-posts" data-test="message">There are no posts yet</p>;
-    }
-
-    if (posts) {
-      return posts.map((post) => {
-        return (
-          <Post
-            key={post.id}
-            data={post}
-            updatePost={[updatePage, setUpdatePage]}
-          />
-        );
-      });
-    }
-  }
-
-  if (!userData) {
-    return "Loading";
-  }
+  }, [update]);
 
   return (
     <TimelineStyle>
-      <Header userData={userData}/>
+      <Header userData={userData} />
+
       <div className="flex-column">
-        <PageTitle title={`# ${hashtag}`} dataTest="hashtag-title" />
+        <PageTitle title="timeline" />
 
         <div className="flex-row">
-          <main>{showPosts()}</main>
+          <main>
+            <SendPostForm
+              updatePost={[update, setUpdate]}
+              userData={userData}
+            />
+
+            {posts.length > 0 &&
+              posts.map((post) => (
+                <Post
+                  key={post.id}
+                  data={post}
+                  updatePost={[update, setUpdate]}
+                />
+              ))}
+          </main>
 
           <aside>
             <Trending />
@@ -89,6 +73,9 @@ const TimelineStyle = styled.div`
 
   min-height: 100vh;
   padding-top: 132px;
+  @media (max-width: 1000px) {
+    margin-top: 50px;
+  }
 
   .flex-column {
     display: flex;
@@ -99,6 +86,7 @@ const TimelineStyle = styled.div`
       margin-bottom: 44px;
 
       @media (max-width: 1000px) {
+        margin-bottom: 20px;
         margin-left: 16px;
       }
     }
