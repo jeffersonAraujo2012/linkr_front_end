@@ -12,6 +12,7 @@ import FollowersContext from "../contexts/FollowersContext";
 export default function TimelineTest() {
   const [posts, setPosts] = useState([]);
   const [update, setUpdate] = useState(false);
+  const [followeds, setFolloweds] = useState([]);
   const [userData, setUserData] = useState(
     JSON.parse(localStorage.getItem("user_data"))
   );
@@ -27,10 +28,15 @@ export default function TimelineTest() {
     );
     resultPosts.then((res) => setPosts(res.data));
     resultPosts.catch((res) => {
-      console.log(
+      alert(
         "An error occured while trying to fetch the posts, please refresh the page"
       );
     });
+
+    const resultFolloweds = axios.get(
+      process.env.REACT_APP_API_URL + `/follows/${userData?.id}`
+    );
+    resultFolloweds.then((res) => setFolloweds(res.data));
   }, [update]);
 
   return (
@@ -46,7 +52,16 @@ export default function TimelineTest() {
               updatePost={[update, setUpdate]}
               userData={userData}
             />
-
+            {followeds.length === 0 && (
+              <p data-test="message" className="no-posts">
+                You don't follow anyone yet. Search for new friends!
+              </p>
+            )}
+            {followeds.length > 0 && posts.length === 0 && (
+              <p data-test="message" className="no-posts">
+                No posts found from your friends
+              </p>
+            )}
             {posts.length > 0 &&
               posts.map((post) => (
                 <Post
@@ -114,6 +129,7 @@ const TimelineStyle = styled.div`
     font-family: "Lato", sans-serif;
     font-size: 30px;
     color: white;
+    margin-bottom: 16px;
   }
 
   .loading {
