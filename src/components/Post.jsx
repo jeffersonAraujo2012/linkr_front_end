@@ -17,7 +17,7 @@ export default function Post({ data, updatePost, user }) {
   const [description, setDescription] = useState(data.description);
   const [visivel, setVisivel] = useState(true);
   // const [like, setLike] = useState(data.liked_by?.find((i) => i=user?.id))
-  const [like, setLike] = useState(data.liked_by.includes(user?.id));
+  const [like, setLike] = useState(data.liked_by.includes(user));
   const [quantLike, setQuantLike] = useState(data.likes_count);
   const inputRef = useRef(null);
 
@@ -29,7 +29,7 @@ export default function Post({ data, updatePost, user }) {
     axios
       .post(process.env.REACT_APP_API_URL + "/posts/like", {
         ...data,
-        user: user.id,
+        user: user,
       })
       .then((res) => {
         setLike(!like);
@@ -79,13 +79,13 @@ export default function Post({ data, updatePost, user }) {
 
         {!like ? (
           <figure>
-            <img src={buttonLike} onClick={likePost} />
-            <figcaption>{quantLike} likes</figcaption>
+            <img src={buttonLike} onClick={likePost} data-test="like-btn" />
+            <figcaption data-test="counter">{quantLike} likes</figcaption>
           </figure>
         ) : (
           <figure>
-            <img src={buttonLike2} onClick={likePost} />
-            <figcaption>{quantLike} likes</figcaption>
+            <img src={buttonLike2} onClick={likePost} data-test="like-btn" />
+            <figcaption data-test="counter">{quantLike} likes</figcaption>
           </figure>
         )}
 
