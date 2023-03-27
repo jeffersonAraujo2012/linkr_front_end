@@ -44,7 +44,7 @@ export default function Post({ data, updatePost, user }) {
     axios
       .delete(process.env.REACT_APP_API_URL + "/posts", { data })
       .then(() => {
-        alert("post deletado com sucesso!");
+        console.log("post deletado com sucesso!");
         setUpdate(!update);
       })
       .catch((err) => alert("Não foi possível deletar o post."));
@@ -63,7 +63,7 @@ export default function Post({ data, updatePost, user }) {
       axios
         .patch(process.env.REACT_APP_API_URL + "/posts", edit)
         .then(() => {
-          alert("post editado com sucesso!");
+          console.log("post editado com sucesso!");
           setUpdate(!update);
         })
         .catch((err) => console.log(err.response.data));
@@ -112,8 +112,9 @@ export default function Post({ data, updatePost, user }) {
                 console.log(visivel);
                 inputRef.current.focus();
               }}
+              data-test="edit-btn"
             />
-            <img src={trash} onClick={openModal} />
+            <img src={trash} onClick={openModal} data-test="delete-btn" />
           </div>
         </div>
 
@@ -121,7 +122,7 @@ export default function Post({ data, updatePost, user }) {
           <div className="modal">
             <h1>Are you sure you want to delete this post?</h1>
             <div>
-              <button className="no" onClick={() => setModal(false)}>
+              <button className="no" onClick={() => setModal(false)} data-test="cancel">
                 No, go back
               </button>
               <button
@@ -130,7 +131,7 @@ export default function Post({ data, updatePost, user }) {
                   setModal(false);
                   deletePost();
                 }}
-                data-test="delete-btn"
+                data-test="confirm"
               >
                 Yes, delete it
               </button>
@@ -168,6 +169,7 @@ export default function Post({ data, updatePost, user }) {
                 setDescription(data.description);
               }}
               required
+              data-test="edit-btn"
             />
           )}
         </div>
