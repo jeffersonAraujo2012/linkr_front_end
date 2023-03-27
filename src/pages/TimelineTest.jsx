@@ -68,6 +68,7 @@ export default function TimelineTest() {
                   key={post.id}
                   data={post}
                   updatePost={[update, setUpdate]}
+                  user={userData.id}
                 />
               ))}
           </main>
